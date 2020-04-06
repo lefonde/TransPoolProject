@@ -3,6 +3,7 @@ public class Main {
         ConsoleUserInterface.getInstance().Run();
 
         System.out.println("hiii shalom");
+        System.out.println("ani");
         System.out.print("Lo, ani!");
     }
 }
