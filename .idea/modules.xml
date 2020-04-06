@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/TransPoolConsole/TransPoolConsole.iml" filepath="$PROJECT_DIR$/TransPoolConsole/TransPoolConsole.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TransPoolEngine/TransPoolEngine.iml" filepath="$PROJECT_DIR$/TransPoolEngine/TransPoolEngine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TransPoolProject.iml" filepath="$PROJECT_DIR$/TransPoolProject.iml" />
+    </modules>
+  </component>
+</project>
