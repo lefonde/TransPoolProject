@@ -2,15 +2,11 @@ package Exceptions;
 
 public class TimeException extends Exception {
     private TimeSection section ;
-
-    private String EXCEPTION_MESSAGE = "The number you entered must present the "
-            + section.getSection()
-            + " therefor it must be between"
-            + section.getFrom() + "-"
-            + section.getTo() ;
+    private String EXCEPTION_MESSAGE;
 
     public TimeException(TimeSection section) {
         this.section = section;
+        this.EXCEPTION_MESSAGE = section.message;
     }
 
     @Override
@@ -19,25 +15,14 @@ public class TimeException extends Exception {
     }
 
     public enum TimeSection {
-        MINUTES("Minutes", "00","59" ),
-        HOURS("Hours", "00", "23");
+        DAY("The number you entered must represent the day therefor it must be positive"),
+        MINUTES("The number you entered must represent the minutes therefor it must be between 00 - 59" ),
+        HOURS("The number you entered must represent the hours therefor it must be between 00 - 23");
 
-        private String section, from, to;
+        private String message;
 
-        public String getFrom() {
-            return from;
-        }
-
-        public String getTo() {
-            return to;
-        }
-
-        public String getSection() {
-            return section;
-        }
-
-        private TimeSection(String section, String from, String to) {
-
+        private TimeSection(String message) {
+            this.message = message;
         }
     }
 }

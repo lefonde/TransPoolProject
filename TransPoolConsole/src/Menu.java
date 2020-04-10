@@ -33,8 +33,9 @@ public class Menu extends MenuComponent {
             try {
                 selection = tryParseInt(userInput);
                 validInput = isValidSelection(selection, i+1);
+                if(!validInput) System.out.println("Your selection was out of range");
             } catch (NumberFormatException e) {
-                System.out.println("Input is invalid. Please enter a single number");
+                System.out.println("Input is invalid. Please enter a single number whole positive number");
             }
         }while(!validInput);
 

@@ -6,14 +6,16 @@ public class Time {
         private int minutes;
 
         public Time(int day, int hour,int minutes) throws TimeException {
-            this.day = day;
+            if(day < 1 )
+                throw new TimeException(TimeException.TimeSection.DAY);
             if(hour>23 || hour<0)
-                // throw new TimeException("Hours");
-            this.hour = hour;
+                throw new TimeException(TimeException.TimeSection.HOURS);
             if(minutes>59 || minutes<0)
-                throw new TimeException(TimeException.TimeSection.MINUTES); //@after it throws the Exceptions.MinutesException how we let the user enter new minute value
-            else
-                this.minutes = round(minutes);
+                throw new TimeException(TimeException.TimeSection.MINUTES);
+
+            this.day = day;
+            this.hour = hour;
+            this.minutes = round(minutes);
         }
 
         private int round(int num) {
