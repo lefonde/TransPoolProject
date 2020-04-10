@@ -1,16 +1,16 @@
-
+import Generated.Scheduling;
 
 public class TripRequest {
 
     private String nameOfApplicant;
     private String fromStation;
     private String toStation;
-    private Time requestedTime;
+    private Scheduling requestedTime;
     private boolean isTripSegmented;
     //private LocalDateTime RequestedTimeOfArrival;
     //private LocalDateTime RequestedTimeOfDeparture;
 
-    TripRequest(String nameOfApplicant, String fromStation, String toStation,Time requestedTimeOfDeparture,boolean isTripSegmented) {
+    TripRequest(String nameOfApplicant, String fromStation, String toStation,Scheduling requestedTimeOfDeparture,boolean isTripSegmented) {
 
         this.nameOfApplicant = nameOfApplicant;
         this.fromStation = fromStation;

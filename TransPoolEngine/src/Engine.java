@@ -2,14 +2,20 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import Exceptions.TimeException;
+import Exceptions.NoSuchStopException;
 import Generated.Scheduling;
+import Generated.Stop;
+import Generated.Stops;
 import Generated.TransPool;
 
 public class Engine {
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "Generated";
     private TransPool data;
+    private ArrayList<TripRequest> tripRequests;
 
     public Engine() {
     }
@@ -25,15 +31,39 @@ public class Engine {
         }
     }
 
+    public void CreateNewTripRequest(String name, String fromStopName, String toStopName, int departureHour, int departureDay) throws NoSuchStopException, TimeException {
+
+        if(findStop(fromStopName) == null) throw new NoSuchStopException(fromStopName);
+        if(findStop(fromStopName) == null) throw new NoSuchStopException(toStopName);
+        Scheduling departureTime = TransPoolDataController.createSchedule(departureHour,departureDay,"");
+
+        tripRequests.add(new TripRequest(name,fromStopName,toStopName,departureTime,false));
+    }
+
+    private Stop findStop(String stopName) {
+        Stop result = null,
+                tempStop;
+
+        Stops stops = data.getMapDescriptor().getStops();
+        Iterator<Stop> stopIterator = stops.getStop().iterator();
+
+        do {
+            tempStop = (Stop) stopIterator;
+            if(tempStop.getName().equals(stopName)) result = tempStop;
+        }while (stopIterator.hasNext() || result == null);
+
+        return result;
+    }
+
     private static TransPool deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
         return (TransPool) u.unmarshal(in);
     }
 
-    private static class TransPoolDataController {
+    protected static class TransPoolDataController {
 
-        private Scheduling createSchedule(int hour, int day, String recurrences) throws TimeException {
+        protected static Scheduling createSchedule(int hour, int day, String recurrences) throws TimeException {
             if(day < 1 )
                 throw new TimeException(TimeException.TimeSection.DAY);
             if(hour>23 || hour<0)
