@@ -15,7 +15,7 @@ import Generated.TransPool;
 public class Engine {
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "Generated";
     private TransPool data;
-    private ArrayList<TripRequest> tripRequests;
+    private ArrayList<TripRequest> tripRequests= new ArrayList<TripRequest>();
 
     public Engine() {
     }
@@ -34,7 +34,7 @@ public class Engine {
     public void CreateNewTripRequest(String name, String fromStopName, String toStopName, int departureHour, int departureDay) throws NoSuchStopException, TimeException {
 
         if(findStop(fromStopName) == null) throw new NoSuchStopException(fromStopName);
-        if(findStop(fromStopName) == null) throw new NoSuchStopException(toStopName);
+        if(findStop(toStopName) == null) throw new NoSuchStopException(toStopName);
         Scheduling departureTime = TransPoolDataController.createSchedule(departureHour,departureDay,"");
 
         tripRequests.add(new TripRequest(name,fromStopName,toStopName,departureTime,false));
