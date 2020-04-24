@@ -9,6 +9,6 @@ public class NoSuchStopException extends Throwable {
 
     @Override
     public String getMessage() {
-        return "The stop " + stopName + "doesn't exist";
+        return "The stop " + stopName + " doesn't exist";
     }
 }

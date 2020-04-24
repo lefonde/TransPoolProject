@@ -1,9 +1,13 @@
+import javax.management.openmbean.ArrayType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
 import Exceptions.TimeException;
 import Exceptions.NoSuchStopException;
@@ -16,8 +20,10 @@ public class Engine {
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "Generated";
     private TransPool data;
     private ArrayList<TripRequest> tripRequests= new ArrayList<TripRequest>();
+    private ArrayList<List<Stop>> pathsNetwork;
 
     public Engine() {
+        loadDataFromXml("Resources/ex1-small");
     }
 
     public void loadDataFromXml(String xmlPath) {
@@ -35,6 +41,7 @@ public class Engine {
 
         if(findStop(fromStopName) == null) throw new NoSuchStopException(fromStopName);
         if(findStop(toStopName) == null) throw new NoSuchStopException(toStopName);
+        checkPathExsit
         Scheduling departureTime = TransPoolDataController.createSchedule(departureHour,departureDay,"");
 
         tripRequests.add(new TripRequest(name,fromStopName,toStopName,departureTime,false));
@@ -44,15 +51,16 @@ public class Engine {
         Stop result = null,
                 tempStop;
 
-        Stops stops = data.getMapDescriptor().getStops();
-        Iterator<Stop> stopIterator = stops.getStop().iterator();
+        List<Stop> stops = data.getMapDescriptor().getStops().getStop();
 
-        do {
-            tempStop = (Stop) stopIterator;
-            if(tempStop.getName().equals(stopName)) result = tempStop;
-        }while (stopIterator.hasNext() || result == null);
+        try {
+            result = stops.stream().filter(x -> x.getName().equalsIgnoreCase(stopName)).findFirst().get();
+        }
+        catch (Exception e){
 
+        }
         return result;
+
     }
 
     private static TransPool deserializeFrom(InputStream in) throws JAXBException {
@@ -76,4 +84,21 @@ public class Engine {
             return schedule;
         }
     }
+
+    public List<Stop> getStops()
+    {
+       return data.getMapDescriptor().getStops().getStop();
+    }
+
+    private void buildPathsNetwork()
+    {
+        Boolean checkStop[] = new Boolean[getStops().size()];
+        Arrays.fill(checkStop, false);//add stream
+
+
+    }
+
+
+
 }
+

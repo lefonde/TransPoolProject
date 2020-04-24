@@ -16,6 +16,7 @@ public class ConsoleUserInterface {
         Executable printAllTripOffers = PrintAllTripOffers.getInstance();
         Executable newTripRequest = NewTripRequest.getInstance();
         printAllTripOffers.loadEngine(engine);
+        newTripRequest.loadEngine(engine);
 
         printSplashScreen();
         Menu mainMenu = new Menu("Main Menu");

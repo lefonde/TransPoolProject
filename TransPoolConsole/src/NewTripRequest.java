@@ -13,11 +13,11 @@ public class NewTripRequest extends Executable {
     public void Execute() {
         System.out.println(DETAILS_REQUEST_PROMPT);
         String usersInput = (new Scanner(System.in)).nextLine();
-        usersInput.replaceAll(" ","");
+        usersInput= usersInput.replaceAll(" ","");
         String[] inputs = usersInput.split(",");
 
         try {
-            engine.CreateNewTripRequest(inputs[0], inputs[1], inputs[2], Integer.parseInt(inputs[3]), Integer.parseInt(inputs[3]));
+            engine.CreateNewTripRequest(inputs[0], inputs[1], inputs[2], Integer.parseInt(inputs[3]), Integer.parseInt(inputs[4]));
         } catch (TimeException e) {
             System.out.println(e.getMessage());
         } catch (NoSuchStopException e) {
