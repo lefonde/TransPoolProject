@@ -3,18 +3,18 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import Exceptions.TimeException;
 import Exceptions.NoSuchStopException;
+import Generated.Path;
 import Generated.Scheduling;
 import Generated.Stop;
 import Generated.Stops;
 import Generated.TransPool;
+import Generated.TransPoolTrip;
 
 public class Engine {
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "Generated";
@@ -37,14 +37,15 @@ public class Engine {
         }
     }
 
-    public void CreateNewTripRequest(String name, String fromStopName, String toStopName, int departureHour, int departureDay) throws NoSuchStopException, TimeException {
+    public void CreateNewTripRequest(String name, String fromStopName, String toStopName,boolean timeChoice, int Hour, int Day) throws NoSuchStopException, TimeException {
 
         if(findStop(fromStopName) == null) throw new NoSuchStopException(fromStopName);
         if(findStop(toStopName) == null) throw new NoSuchStopException(toStopName);
-        checkPathExsit
-        Scheduling departureTime = TransPoolDataController.createSchedule(departureHour,departureDay,"");
 
-        tripRequests.add(new TripRequest(name,fromStopName,toStopName,departureTime,false));
+        boolean isTripExist= checkTripExist(fromStopName, toStopName);
+
+        Scheduling time= TransPoolDataController.createSchedule(Hour,Day,"");
+        tripRequests.add(new TripRequest(name,fromStopName,toStopName,time,timeChoice,false));
     }
 
     private Stop findStop(String stopName) {
@@ -72,7 +73,7 @@ public class Engine {
     protected static class TransPoolDataController {
 
         protected static Scheduling createSchedule(int hour, int day, String recurrences) throws TimeException {
-            if(day < 1 )
+            if(day < 0 )
                 throw new TimeException(TimeException.TimeSection.DAY);
             if(hour>23 || hour<0)
                 throw new TimeException(TimeException.TimeSection.HOURS);
@@ -89,13 +90,31 @@ public class Engine {
     {
        return data.getMapDescriptor().getStops().getStop();
     }
-
-    private void buildPathsNetwork()
+    public List<Path> getPaths()
     {
-        Boolean checkStop[] = new Boolean[getStops().size()];
-        Arrays.fill(checkStop, false);//add stream
+        return data.getMapDescriptor().getPaths().getPath();
+    }
 
-
+    private boolean checkTripExist(String fromStopName, String toStopName)
+    {
+        boolean from=false,to=false;
+        List<TransPoolTrip> transPoolTrip = data.getPlannedTrips().getTransPoolTrip();
+        for (TransPoolTrip t:transPoolTrip) {
+            String[] stops = t.getRoute().getPath().split(",");
+            from=false; to=false;
+            for (String s:stops) {
+                if (s.equalsIgnoreCase(fromStopName))
+                {
+                    from=true;
+                }
+                if (s.equalsIgnoreCase(toStopName))
+                {
+                    if(from)
+                        to=true;
+                }
+            }
+        }
+    return (from && to);
     }
 
 

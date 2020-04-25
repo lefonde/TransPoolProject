@@ -1,12 +1,12 @@
 import Exceptions.TimeException;
 
 public class Time {
-        private int day;
+        private int day=0;
         private int hour;
         private int minutes;
 
         public Time(int day, int hour,int minutes) throws TimeException {
-            if(day < 1 )
+            if(day < 0 )
                 throw new TimeException(TimeException.TimeSection.DAY);
             if(hour>23 || hour<0)
                 throw new TimeException(TimeException.TimeSection.HOURS);
