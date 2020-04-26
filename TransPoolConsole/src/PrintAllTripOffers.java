@@ -1,8 +1,11 @@
 import Exceptions.TimeException;
+import Generated.PlannedTrips;
 import Generated.Stop;
 import Generated.Stops;
+import Generated.TransPoolTrip;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -13,23 +16,34 @@ public class PrintAllTripOffers extends Executable {
 
     @Override
     public void Execute() {
-        System.out.println("Britney bitch!");
-        engine.loadDataFromXml("Resources/ex1-small");
 
 
-        List<Stop> stopList=engine.getStops();
+        List<TransPoolTrip> plannedTripsList= engine.getPlannedTrips();
+        int length=plannedTripsList.size();
+        System.out.println("trip number:");
+        for (TransPoolTrip t: plannedTripsList) {
+            System.out.println("Trip owner:"+ t.getOwner());
+            System.out.println("Trip route:"+ t.getRoute().getPath().toString());
+            int cost=calculetaTripCost(t);
 
-        for (Stop stop:stopList) {
-            System.out.println(stop.getName());
+            t.getPPK();
+
+            t.getCapacity();
+            t.getScheduling();
+
         }
 
-
-        try {
-            Time time = new Time(0, 0, 19);
-        } catch (TimeException e) {
-            System.out.println(e.getMessage());
-        }
     }
+
+    private int calculetaTripCost(TransPoolTrip t) {
+        int ppk=t.getPPK();
+        String[] stops=t.getRoute().getPath().split(",");
+
+
+
+        return 0;
+    }
+
 
     public static Executable getInstance() {
         return instance;

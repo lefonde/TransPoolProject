@@ -86,13 +86,16 @@ public class Engine {
         }
     }
 
-    public List<Stop> getStops()
-    {
+    public List<Stop> getStops()    {
        return data.getMapDescriptor().getStops().getStop();
     }
-    public List<Path> getPaths()
-    {
+
+    public List<Path> getPaths()    {
         return data.getMapDescriptor().getPaths().getPath();
+    }
+
+    public List<TransPoolTrip> getPlannedTrips()   {
+        return data.getPlannedTrips().getTransPoolTrip();
     }
 
     private boolean checkTripExist(String fromStopName, String toStopName)
