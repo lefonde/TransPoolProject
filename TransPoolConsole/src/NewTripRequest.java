@@ -12,6 +12,7 @@ public class NewTripRequest extends Executable {
     @Override
     public void Execute() {
         System.out.println(DETAILS_REQUEST_PROMPT);
+
         String usersInput = (new Scanner(System.in)).nextLine();
         usersInput= usersInput.replaceAll(" ","");
         String[] inputs = usersInput.split(",");

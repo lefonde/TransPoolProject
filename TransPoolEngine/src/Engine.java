@@ -41,7 +41,6 @@ public class Engine {
 
         if(findStop(fromStopName) == null) throw new NoSuchStopException(fromStopName);
         if(findStop(toStopName) == null) throw new NoSuchStopException(toStopName);
-        checkPathExsit
         Scheduling departureTime = TransPoolDataController.createSchedule(departureHour,departureDay,"");
 
         tripRequests.add(new TripRequest(name,fromStopName,toStopName,departureTime,false));
