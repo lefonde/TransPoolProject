@@ -1,4 +1,5 @@
 import Exceptions.TimeException;
+import Generated.Path;
 import Generated.PlannedTrips;
 import Generated.Stop;
 import Generated.Stops;
@@ -18,30 +19,35 @@ public class PrintAllTripOffers extends Executable {
     public void Execute() {
 
 
-        List<TransPoolTrip> plannedTripsList= engine.getPlannedTrips();
-        int length=plannedTripsList.size();
-        System.out.println("trip number:");
-        for (TransPoolTrip t: plannedTripsList) {
+        List<ProxyTransPoolTrip> plannedTripsList= engine.getPlannedTrips();
+        int countTrips=plannedTripsList.size();
+        System.out.println("There are:" + countTrips + "trips");
+        for (ProxyTransPoolTrip t: plannedTripsList) {
             System.out.println("Trip owner:"+ t.getOwner());
             System.out.println("Trip route:"+ t.getRoute().getPath().toString());
             int cost=calculetaTripCost(t);
+            System.out.println("Trip cost: "+ cost);
+            System.out.println("Capacity: "+ t.getCapacity());
 
-            t.getPPK();
 
-            t.getCapacity();
-            t.getScheduling();
+            //t.getScheduling();
 
         }
 
     }
 
-    private int calculetaTripCost(TransPoolTrip t) {
+    private int calculetaTripCost(ProxyTransPoolTrip t) {
         int ppk=t.getPPK();
-        String[] stops=t.getRoute().getPath().split(",");
+        List<ProxyPath> paths=engine.getPaths();
+        int sum=0;
+        for (ProxyPath p: paths) {
+            sum+= p.getLength()*ppk;
+
+        }
+        return sum;
 
 
 
-        return 0;
     }
 
 

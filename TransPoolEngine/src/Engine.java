@@ -1,26 +1,19 @@
-import javax.management.openmbean.ArrayType;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import Exceptions.TimeException;
 import Exceptions.NoSuchStopException;
-import Generated.Path;
 import Generated.Scheduling;
-import Generated.Stop;
-import Generated.Stops;
-import Generated.TransPool;
-import Generated.TransPoolTrip;
 
 public class Engine {
+
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "Generated";
-    private TransPool data;
-    private ArrayList<TripRequest> tripRequests= new ArrayList<TripRequest>();
-    private ArrayList<List<Stop>> pathsNetwork;
+    private ProxyTransPool data;
+    private ArrayList<TripRequest> tripRequestsList= new ArrayList<TripRequest>();
+
 
     public Engine() {
         loadDataFromXml("Resources/ex1-small");
@@ -45,14 +38,14 @@ public class Engine {
         boolean isTripExist= checkTripExist(fromStopName, toStopName);
 
         Scheduling time= TransPoolDataController.createSchedule(Hour,Day,"");
-        tripRequests.add(new TripRequest(name,fromStopName,toStopName,time,timeChoice,false));
+        tripRequestsList.add(new TripRequest(name,fromStopName,toStopName,time,timeChoice,false));
     }
 
-    private Stop findStop(String stopName) {
-        Stop result = null,
+    private ProxyStop findStop(String stopName) {
+        ProxyStop result = null,
                 tempStop;
 
-        List<Stop> stops = data.getMapDescriptor().getStops().getStop();
+        List<ProxyStop> stops = data.getMapDescriptor().getStops().getTheStopList();
 
         try {
             result = stops.stream().filter(x -> x.getName().equalsIgnoreCase(stopName)).findFirst().get();
@@ -64,10 +57,10 @@ public class Engine {
 
     }
 
-    private static TransPool deserializeFrom(InputStream in) throws JAXBException {
+    private static ProxyTransPool deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
         Unmarshaller u = jc.createUnmarshaller();
-        return (TransPool) u.unmarshal(in);
+        return (ProxyTransPool) u.unmarshal(in);
     }
 
     protected static class TransPoolDataController {
@@ -86,23 +79,23 @@ public class Engine {
         }
     }
 
-    public List<Stop> getStops()    {
-       return data.getMapDescriptor().getStops().getStop();
+   public List<ProxyStop> getStops()    {
+      return data.getMapDescriptor().getStops().getTheStopList();
+   }
+
+   public List<ProxyPath> getPaths()    {
+        return data.getMapDescriptor().getPaths().getPathsList();
     }
 
-    public List<Path> getPaths()    {
-        return data.getMapDescriptor().getPaths().getPath();
-    }
-
-    public List<TransPoolTrip> getPlannedTrips()   {
+    public List<ProxyTransPoolTrip> getPlannedTrips()   {
         return data.getPlannedTrips().getTransPoolTrip();
     }
 
     private boolean checkTripExist(String fromStopName, String toStopName)
     {
         boolean from=false,to=false;
-        List<TransPoolTrip> transPoolTrip = data.getPlannedTrips().getTransPoolTrip();
-        for (TransPoolTrip t:transPoolTrip) {
+        List<ProxyTransPoolTrip> transPoolTrip = data.getPlannedTrips().getTransPoolTrip();
+        for (ProxyTransPoolTrip t:transPoolTrip) {
             String[] stops = t.getRoute().getPath().split(",");
             from=false; to=false;
             for (String s:stops) {
