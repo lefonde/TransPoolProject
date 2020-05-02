@@ -19,15 +19,14 @@ public class NewTripRequest extends Executable {
     @Override
     public void Execute() {
         System.out.println(DETAILS_REQUEST_PROMPT);
-        engine.getStops().stream().forEach(stop -> System.out.println(stop.getName()));
+        engine.GetStops().stream().forEach(stop -> System.out.print(stop.getName() + ", "));
+        System.out.println();
         String usersInput = (new Scanner(System.in)).nextLine();
-        usersInput= usersInput.replaceAll(" ","");
-        String[] inputs = usersInput.split(",");
+        String[] inputs = usersInput.replaceAll(" ","").split(",");
 
         System.out.println(TIME_REQUEST_PROMPT);
         String usersTimeInput = (new Scanner(System.in)).nextLine();
-        usersInput= usersInput.replaceAll(" ","");
-        String[] timeInputs = usersInput.split(",");
+        String[] timeInputs = usersTimeInput.replaceAll(" ","").split(",");
 
         try {
             engine.CreateNewTripRequest(inputs[0], inputs[1], inputs[2],Boolean.parseBoolean(timeInputs[0]),Integer.parseInt(timeInputs[1]), Integer.parseInt(timeInputs[2]));

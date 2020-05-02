@@ -7,13 +7,13 @@ import java.util.List;
 
 public class ProxyPaths {
 
-    protected List<ProxyPath> thePathList=null;
+    protected List<ProxyPath> thePathList = null;
 
     public ProxyPaths(Paths paths)
     {
         List<Path> pathList=paths.getPath();
         for (Path p: pathList) {
-           ProxyPath newPath= new ProxyPath(p);
+           ProxyPath newPath = new ProxyPath(p);
             thePathList.add(newPath);
         }
     }

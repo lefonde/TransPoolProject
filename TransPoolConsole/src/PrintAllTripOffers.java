@@ -19,37 +19,19 @@ public class PrintAllTripOffers extends Executable {
     public void Execute() {
 
 
-        List<ProxyTransPoolTrip> plannedTripsList= engine.getPlannedTrips();
-        int countTrips=plannedTripsList.size();
-        System.out.println("There are:" + countTrips + "trips");
-        for (ProxyTransPoolTrip t: plannedTripsList) {
-            System.out.println("Trip owner:"+ t.getOwner());
-            System.out.println("Trip route:"+ t.getRoute().getPath().toString());
-            int cost=calculetaTripCost(t);
-            System.out.println("Trip cost: "+ cost);
-            System.out.println("Capacity: "+ t.getCapacity());
+        List<TransPoolTrip> plannedTripsList = engine.getPlannedTrips();
+        int countTrips = plannedTripsList.size();
+        System.out.println("There are: " + countTrips + " trips in the system:\n");
 
-
+        plannedTripsList.stream().
+                forEach(x -> System.out.println("Trip owner: "
+                        + x.getOwner()
+                        + " Trip route: "
+                        + x.getRoute().getPath().toString()
+                        + " Trip cost: " + engine.calculateTripCost(x)
+                        + " Capacity: " + x.getCapacity()));
             //t.getScheduling();
-
-        }
-
     }
-
-    private int calculetaTripCost(ProxyTransPoolTrip t) {
-        int ppk=t.getPPK();
-        List<ProxyPath> paths=engine.getPaths();
-        int sum=0;
-        for (ProxyPath p: paths) {
-            sum+= p.getLength()*ppk;
-
-        }
-        return sum;
-
-
-
-    }
-
 
     public static Executable getInstance() {
         return instance;
