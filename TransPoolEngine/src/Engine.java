@@ -89,22 +89,16 @@ public class Engine {
         return data.getMapDescriptor().getPaths().getPathsList();
     }*/
 
-    public List<TransPoolTrip> getPlannedTrips() {
-        return data.GetAllPlannedTrips();
+    public List<ProxyTransPoolTrip> getPlannedTrips() {
+        return data.getTransPoolTripList();
     }
 
     public int calculateTripCost(TransPoolTrip trip) {
-        int tripCost = 0;
-        int ppk = trip.getPPK();
-
+        int tripLength = 0;
         String[] pathsNames = trip.getRoute().getPath().replaceAll(" ","").split(",");
-
-        for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
-            tripCost = data.GetPath(pathsNames[i], pathsNames[i+1]).getLength();
-        }
-
-        tripCost = tripCost * ppk;
-        return tripCost;
+        for(int i = 0 ; i < pathsNames.length - 1 ; i++)
+            tripLength += data.GetPath(pathsNames[i], pathsNames[i+1]).getLength();
+        return tripLength * trip.getPPK();
     }
 
 

@@ -19,17 +19,18 @@ public class PrintAllTripOffers extends Executable {
     public void Execute() {
 
 
-        List<TransPoolTrip> plannedTripsList = engine.getPlannedTrips();
+        List<ProxyTransPoolTrip> plannedTripsList = engine.getPlannedTrips();
         int countTrips = plannedTripsList.size();
         System.out.println("There are: " + countTrips + " trips in the system:\n");
 
         plannedTripsList.stream().
-                forEach(x -> System.out.println("Trip owner: "
-                        + x.getOwner()
+                forEach(x -> System.out.println(" Trip serial number: "+ x.getSerialNumber()+
+                        " Trip owner: " + x.getOwner()
                         + " Trip route: "
                         + x.getRoute().getPath().toString()
                         + " Trip cost: " + engine.calculateTripCost(x)
-                        + " Capacity: " + x.getCapacity()));
+                        + " Capacity: " + x.getCapacity()
+                        + "Departure: " + x.getScheduling().getHourStart()));
             //t.getScheduling();
     }
 

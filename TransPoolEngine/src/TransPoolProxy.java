@@ -1,14 +1,13 @@
 import Exceptions.NoSuchStopException;
-import Generated.Path;
-import Generated.Stop;
-import Generated.TransPool;
-import Generated.TransPoolTrip;
+import Generated.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransPoolProxy {
 
-    TransPool data;
+    protected TransPool data;
+    protected List<ProxyTransPoolTrip> transPoolTrip;
 
     public void loadData(TransPool data) {
         this.data = data;
@@ -24,9 +23,22 @@ public class TransPoolProxy {
     public int GetMapLengthBoundary() {
         return data.getMapDescriptor().getMapBoundries().getLength();
     }
-
+    public void initPlannedTrips()
+    {
+        List<TransPoolTrip> transPoolTripList=data.getPlannedTrips().getTransPoolTrip();
+        for (TransPoolTrip t: transPoolTripList)
+        {
+            ProxyTransPoolTrip newTrip=new ProxyTransPoolTrip(t);
+            transPoolTrip.add(newTrip);
+        }
+    }
     public int GetMapWidthBoundary() {
         return data.getMapDescriptor().getMapBoundries().getWidth();
+    }
+
+    public List<ProxyTransPoolTrip> getTransPoolTripList()  {
+        if (transPoolTrip == null) transPoolTrip = new ArrayList<ProxyTransPoolTrip>();
+        return this.transPoolTrip;
     }
 
     public List<Path> GetAllPaths() {
