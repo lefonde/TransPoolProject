@@ -32,7 +32,6 @@ public class Engine {
         try {
             TransPool transPoolData = deserializeFrom(inputStream);
             data.loadData(transPoolData);
-
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -123,7 +122,7 @@ public class Engine {
       return data.GetAllStops();
    }
 
-    /*public List<ProxyPath> getPaths()    {
+    /*public List<ProxyPath> getPaths(){
         return data.getMapDescriptor().getPaths().getPathsList();
     }*/
 
