@@ -16,6 +16,10 @@ public class Engine {
     private TransPoolProxy data = new TransPoolProxy();
     private ArrayList<TripRequest> tripRequestsList= new ArrayList<TripRequest>();
 
+    public ArrayList<TripRequest> getTripRequestsList() {
+        return tripRequestsList;
+    }
+
     public Engine() {
         loadDataFromXml("Resources/ex1-small");
         data.initPlannedTrips();
