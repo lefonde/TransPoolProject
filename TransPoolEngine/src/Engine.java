@@ -107,6 +107,15 @@ public class Engine {
         return tripCost;
     }
 
+
+    public boolean DoesPathExists(String fromStopName, String toStopName) {
+        return data.GetPath(fromStopName, toStopName) != null;
+    }
+
+    public boolean IsRoutePossible(String fromStopName, String toStopName) {
+        return false;
+    }
+
     /*private boolean checkTripExist(String fromStopName, String toStopName) {
         boolean from = false;
         boolean to = false;
