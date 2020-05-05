@@ -12,9 +12,13 @@ public class TransPoolProxy {
 
     public void loadData(TransPool data) {
         this.data = data;
-        for(Path path : data.getMapDescriptor().getPaths().getPath()) {
-            if(!isPathValid(path.getFrom(), path.getTo())) System.out.println("path error");
-        }
+        // TODO: validate no duplicate stops
+        // TODO: validate stops are inside the map
+        // TODO: validate no two stops on the same coord
+        // TODO: validate stops in paths exist
+        // TODO: validate each path contains all relevant information
+        // TODO: validate routes in TransPoolTrips go through existing sequential paths
+        // TODO: validate each TransPoolTrip contain all relevant information
     }
 
     public int GetMapLengthBoundary() {
@@ -35,14 +39,15 @@ public class TransPoolProxy {
 
         try {
             result = paths.stream()
-                    .filter(x -> x.getFrom().equalsIgnoreCase(fromStopName))
-                    .filter(x -> x.getTo().equalsIgnoreCase(toStopName))
+                    .filter(x -> x.getFrom().equalsIgnoreCase(fromStopName)
+                            && x.getTo().equalsIgnoreCase(toStopName))
                     .findFirst()
                     .get();
         }
         catch (Exception e){
 
         }
+
         return result;
     }
 
@@ -51,10 +56,6 @@ public class TransPoolProxy {
     }
 
     /*public void GetPlannedTrip() {}*/
-
-    /*public void GetAllRoutes() {
-        return data.getMapDescriptor().g
-    }*/
 
     /*public void GetRoute() {}*/
 
@@ -80,7 +81,4 @@ public class TransPoolProxy {
         return result;
     }
 
-    private boolean isPathValid(String fromStopName, String toStopName) {
-        return GetStop(fromStopName) != null && GetStop(toStopName) != null;
-    }
 }

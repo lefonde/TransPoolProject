@@ -18,11 +18,16 @@ public class NewTripRequest extends Executable {
 
     @Override
     public void Execute() {
+        StringBuilder optionalStopsSB = new StringBuilder();
+        engine.GetStops().stream().forEach(stop -> optionalStopsSB.append(stop.getName() + ", "));
+        optionalStopsSB.setLength(optionalStopsSB.length() - 2);
+
         System.out.println(DETAILS_REQUEST_PROMPT);
-        engine.GetStops().stream().forEach(stop -> System.out.print(stop.getName() + ", "));
-        System.out.println();
+        System.out.println(optionalStopsSB);
         String usersInput = (new Scanner(System.in)).nextLine();
         String[] inputs = usersInput.replaceAll(" ","").split(",");
+
+        //if(!engine.IsPathValid(inputs[1], inputs[2])) System.out.println("No Path between the two stops!");
 
         System.out.println(TIME_REQUEST_PROMPT);
         String usersTimeInput = (new Scanner(System.in)).nextLine();
