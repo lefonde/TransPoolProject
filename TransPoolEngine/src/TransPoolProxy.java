@@ -53,16 +53,23 @@ public class TransPoolProxy {
 
 
     }
-    /* private boolean validateUniqueStopsInMap(TransPool data) {
-            List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
-           int currX,currY;
-            for (Stop s:stopList) {
-               currX = s.getX();
-               currY = s.getY();
-               for
+    private boolean validateUniqueStopsInMap(TransPool data) {
+            ArrayList<Stop> stopList= (ArrayList<Stop>) data.getMapDescriptor().getStops().getStop();
+            int currX, currY, size=stopList.size();
 
+           for (int i=0;i<size-1;i++) {
+               currX=stopList.get(i).getX();
+               currY=stopList.get(i).getY();
+
+               for(int j=i+1;j<size-1;j++)
+               {
+                   if(currX==stopList.get(j).getX())
+                       if(currY==stopList.get(j).getY())
+                           return false;
+               }
             }
-        }*/
+           return true;
+        }
     private boolean validStopsInAllPaths(TransPool data) {
         List<TransPoolTrip> transPoolTripList = data.getPlannedTrips().getTransPoolTrip();
         List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
