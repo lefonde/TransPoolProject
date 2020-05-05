@@ -6,10 +6,9 @@ import java.util.*;
 
 import Exceptions.TimeException;
 import Exceptions.NoSuchStopException;
-import Generated.Scheduling;
-import Generated.Stop;
-import Generated.TransPool;
-import Generated.TransPoolTrip;
+import Generated.*;
+import com.sun.javafx.collections.MappingChange;
+import com.sun.xml.internal.fastinfoset.util.CharArray;
 
 public class Engine {
 
@@ -19,6 +18,7 @@ public class Engine {
 
     public Engine() {
         loadDataFromXml("Resources/ex1-small");
+        data.initPlannedTrips();
     }
 
     public void loadDataFromXml(String xmlPath) {
@@ -65,6 +65,25 @@ public class Engine {
         return (TransPool) u.unmarshal(in);
     }
 
+    public String calculateArrivalTime(ProxyTransPoolTrip trip) {
+        double totalTripTime=calculateTripLength(trip);
+        int departure= trip.getScheduling().getHourStart();
+        double minutes = totalTripTime %60;
+        int hour= (int) (totalTripTime/60+departure);
+        return (hour +":"+minutes);
+    }
+
+
+    public double calculateTripLength (ProxyTransPoolTrip trip) {
+        double totalTripTime=0;
+        String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
+        for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
+            Path path = data.GetPath(pathsNames[i], pathsNames[i+1]);
+            totalTripTime += path != null ? path.getLength() / path.getSpeedLimit() : 0;
+        }
+
+        return totalTripTime*60;
+    }
     protected static class TransPoolDataController {
 
         protected static Scheduling createSchedule(int hour, int day, String recurrences) throws TimeException {
@@ -85,7 +104,7 @@ public class Engine {
       return data.GetAllStops();
    }
 
-    /*public List<ProxyPath> getPaths()    {
+    /*public List<ProxyPath> getPaths(){
         return data.getMapDescriptor().getPaths().getPathsList();
     }*/
 
@@ -93,15 +112,45 @@ public class Engine {
         return data.getTransPoolTripList();
     }
 
-    public int calculateTripCost(TransPoolTrip trip) {
+    public int calculateTripCost(ProxyTransPoolTrip trip) {
         int tripLength = 0;
-        String[] pathsNames = trip.getRoute().getPath().replaceAll(" ","").split(",");
+        String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
+
+        for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
+            Path path = data.GetPath(pathsNames[i], pathsNames[i+1]);
+            tripLength += path != null ? path.getLength() : 0;
+        }
+
+        return tripLength * trip.getPPK();
+    }
+//TODO:
+    public int averageFuelCost(ProxyTransPoolTrip trip) {
+        int tripLength = 0;
+        String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
         for(int i = 0 ; i < pathsNames.length - 1 ; i++)
             tripLength += data.GetPath(pathsNames[i], pathsNames[i+1]).getLength();
         return tripLength * trip.getPPK();
     }
-
-
+    public Map<String,List<String>> gettingOffMap(ProxyTransPoolTrip trip)
+    {
+        Map<String, List<String>> gettingOffMap = new HashMap<String, List<String>>();
+      trip.getMembers().stream().forEach(x-> {
+          if(!gettingOffMap.containsKey(x.getToStation()))
+                gettingOffMap.put(x.getToStation(), new ArrayList<String>());
+          gettingOffMap.get(x.getToStation()).add(x.getNameOfApplicant());
+      });
+      return gettingOffMap;
+    }
+    public Map<String,List<String>> gettingOnMap(ProxyTransPoolTrip trip)
+    {
+        Map<String, List<String>> gettingOnMap = new HashMap<String, List<String>>();
+        trip.getMembers().stream().forEach(x-> {
+            if(!gettingOnMap.containsKey(x.getFromStation()))
+               gettingOnMap.put(x.getFromStation(), new ArrayList<String>());
+            gettingOnMap.get(x.getFromStation()).add(x.getNameOfApplicant());
+        });
+        return gettingOnMap;
+    }
     public boolean DoesPathExists(String fromStopName, String toStopName) {
         return data.GetPath(fromStopName, toStopName) != null;
     }

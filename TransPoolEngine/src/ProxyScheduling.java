@@ -9,13 +9,23 @@ public class ProxyScheduling {
     protected Integer dayStart;
 
 
-        public ProxyScheduling(Scheduling scheduling)
-        {
-            this.recurrences=scheduling.getRecurrences();
-            this.dayStart=scheduling.getDayStart();
-            this.hourStart=scheduling.getHourStart();
-        }
+    public ProxyScheduling(Scheduling scheduling)
+    {
+        this.recurrences=scheduling.getRecurrences();
+        this.dayStart=scheduling.getDayStart();
+        this.hourStart=scheduling.getHourStart();
+    }
+    public String getRecurrences() {
+        return recurrences;
+    }
 
+    public int getHourStart() {
+        return hourStart;
+    }
+
+    public Integer getDayStart() {
+        return dayStart;
+    }
         public ProxyScheduling(int day, int hour, int minutes) throws TimeException {
             if(day < 0 )
                 throw new TimeException(TimeException.TimeSection.DAY);

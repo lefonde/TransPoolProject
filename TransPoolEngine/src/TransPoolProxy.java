@@ -3,11 +3,15 @@ import Generated.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class TransPoolProxy {
 
     protected TransPool data;
-    protected List<ProxyTransPoolTrip> transPoolTrip;
+    protected ArrayList<ProxyTransPoolTrip> transPoolTrip = new ArrayList<ProxyTransPoolTrip>();
+
+
 
     public void loadData(TransPool data) {
         this.data = data;
@@ -50,14 +54,14 @@ public class TransPoolProxy {
         List<Path> paths = GetAllPaths();
 
         try {
-            result = paths.stream()
+            List<Path> fiteredList= paths.stream()
                     .filter(x -> x.getFrom().equalsIgnoreCase(fromStopName)
                             && x.getTo().equalsIgnoreCase(toStopName))
-                    .findFirst()
-                    .get();
+                    .collect(Collectors.toList());
+            result = fiteredList.isEmpty() ? null : fiteredList.get(0);
         }
         catch (Exception e){
-
+            return result;
         }
 
         return result;

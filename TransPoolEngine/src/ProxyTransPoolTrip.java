@@ -1,21 +1,20 @@
-import Generated.Route;
-import Generated.Scheduling;
 import Generated.TransPoolTrip;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class ProxyTransPoolTrip {
 
     private static int counter = 0;
-    protected TransPoolTrip transPoolTrip;
-    protected String owner;
-    protected int capacity;
-    protected int serialNumber;
-    protected List<String> members;
-    protected int ppk;
-    protected String route;
-    protected ProxyScheduling scheduling;
+    private int serialNumber;
+
+
+    private String owner;
+    private int capacity;
+    private List<TripRequest> members;
+    private int ppk;
+    private String route;
+    private ProxyScheduling scheduling;
 
 
     public ProxyTransPoolTrip(TransPoolTrip theTransPoolTrip)
@@ -27,8 +26,17 @@ public class ProxyTransPoolTrip {
         this.route= theTransPoolTrip.getRoute().getPath();
         this.scheduling= new ProxyScheduling(theTransPoolTrip.getScheduling());
         this.serialNumber= ++counter;
+        this.members= new ArrayList<TripRequest>();
     }
-    public String getOwner() {        return transPoolTrip.getOwner();    }
+
+    public void setMembers(List<TripRequest> members) {
+        this.members = members;
+    }
+    public List<TripRequest> getMembers(){
+        return members;
+    }
+
+    public String getOwner() {        return owner;    }
 
     public void setOwner(String value) {        this.owner = value;    }
 
