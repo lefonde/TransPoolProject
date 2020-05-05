@@ -25,12 +25,12 @@ public class TransPoolProxy {
                 Thread.sleep(5000);
                 System.exit(0);
             }
-            // TODO: validate no two stops on the same coord
-            /*if (!validateUniqueStopsInMap(data)) {
+
+            if (!validateUniqueStopsInMap(data)) {
                 System.out.println("error in XML, There are two stops in the same coordinates");
                 Thread.sleep(5000);
                 System.exit(0);
-            }*/
+            }
 
             if (!validateExistingPaths(data)) {
                 System.out.println("error in XML, There is a path in the trans pool trips that are not exist");
