@@ -3,6 +3,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import Exceptions.TimeException;
 import Exceptions.NoSuchStopException;
@@ -31,6 +32,7 @@ public class Engine {
         try {
             TransPool transPoolData = deserializeFrom(inputStream);
             data.loadData(transPoolData);
+
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -88,6 +90,19 @@ public class Engine {
 
         return totalTripTime*60;
     }
+    public List<ProxyTransPoolTrip> GetAllTripsInRoute(String fromStation, String toStation, Scheduling requestedTimeOfDeparture) {
+        List<ProxyTransPoolTrip> result;
+
+        result = data.GetAllPlannedTrips().stream()
+                .filter(trip -> {
+                    String [] stops = trip.getRoute().split("[ \\t\\n\\,\\?\\;\\.\\:\\!]");
+                    return (stops[0].equalsIgnoreCase(fromStation) && stops[stops.length - 1].equalsIgnoreCase(toStation));
+                })
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
     protected static class TransPoolDataController {
 
         protected static Scheduling createSchedule(int hour, int day, String recurrences) throws TimeException {
@@ -108,7 +123,7 @@ public class Engine {
       return data.GetAllStops();
    }
 
-    /*public List<ProxyPath> getPaths(){
+    /*public List<ProxyPath> getPaths()    {
         return data.getMapDescriptor().getPaths().getPathsList();
     }*/
 
@@ -161,6 +176,10 @@ public class Engine {
 
     public boolean IsRoutePossible(String fromStopName, String toStopName) {
         return false;
+    }
+
+    public List<TripRequest> GetAllTripRequests() {
+        return tripRequestsList;
     }
 
     /*private boolean checkTripExist(String fromStopName, String toStopName) {

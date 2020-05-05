@@ -1,14 +1,20 @@
-
+import Exceptions.TimeException;
+import Generated.Path;
+import Generated.PlannedTrips;
+import Generated.Stop;
+import Generated.Stops;
+import Generated.TransPoolTrip;
 
 import java.util.List;
 import java.util.Map;
-
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class PrintAllTripOffers extends Executable {
     private static final PrintAllTripOffers instance = new PrintAllTripOffers();
 
-    private PrintAllTripOffers() {
-    }
+    private PrintAllTripOffers() { }
 
     @Override
     public void Execute() {

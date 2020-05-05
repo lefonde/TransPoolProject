@@ -50,6 +50,7 @@ public class ProxyTransPoolTrip {
     public int getPPK() {return ppk;    }
 
     public void setPPK(int value) { this.ppk = value;    }
+
     public String getRoute() {
         return route;
     }

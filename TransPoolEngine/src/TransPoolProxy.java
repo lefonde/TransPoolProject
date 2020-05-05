@@ -9,9 +9,7 @@ import java.util.stream.Collectors;
 public class TransPoolProxy {
 
     protected TransPool data;
-    protected ArrayList<ProxyTransPoolTrip> transPoolTrip = new ArrayList<ProxyTransPoolTrip>();
-
-
+    protected ArrayList<ProxyTransPoolTrip> transPoolTrips = new ArrayList<>();
 
     public void loadData(TransPool data) {
         this.data = data;
@@ -27,13 +25,14 @@ public class TransPoolProxy {
     public int GetMapLengthBoundary() {
         return data.getMapDescriptor().getMapBoundries().getLength();
     }
+
     public void initPlannedTrips()
     {
         List<TransPoolTrip> transPoolTripList=data.getPlannedTrips().getTransPoolTrip();
         for (TransPoolTrip t: transPoolTripList)
         {
             ProxyTransPoolTrip newTrip=new ProxyTransPoolTrip(t);
-            transPoolTrip.add(newTrip);
+            transPoolTrips.add(newTrip);
         }
     }
     public int GetMapWidthBoundary() {
@@ -41,8 +40,8 @@ public class TransPoolProxy {
     }
 
     public List<ProxyTransPoolTrip> getTransPoolTripList()  {
-        if (transPoolTrip == null) transPoolTrip = new ArrayList<ProxyTransPoolTrip>();
-        return this.transPoolTrip;
+        if (transPoolTrips == null) transPoolTrips = new ArrayList<ProxyTransPoolTrip>();
+        return this.transPoolTrips;
     }
 
     public List<Path> GetAllPaths() {
@@ -67,8 +66,8 @@ public class TransPoolProxy {
         return result;
     }
 
-    public List<TransPoolTrip> GetAllPlannedTrips() {
-        return data.getPlannedTrips().getTransPoolTrip();
+    public List<ProxyTransPoolTrip> GetAllPlannedTrips() {
+        return transPoolTrips;
     }
 
     /*public void GetPlannedTrip() {}*/

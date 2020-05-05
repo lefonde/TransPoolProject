@@ -8,6 +8,7 @@ public class TripRequest {
     private String fromStation;
     private String toStation;
     private Scheduling RequestedTimeOfDeparture;
+
     private boolean isTripSegmented;
     private boolean timeDefChoice;//departure=0, arrival=1
     //private LocalDateTime RequestedTimeOfDeparture;
@@ -23,27 +24,55 @@ public class TripRequest {
         this.serialNumber=++counter;
     }
 
-    public int getSerialNumber() {
-        return serialNumber;
-    }
-
     public String getNameOfApplicant() {
         return nameOfApplicant;
+    }
+
+    public void setNameOfApplicant(String nameOfApplicant) {
+        this.nameOfApplicant = nameOfApplicant;
     }
 
     public String getFromStation() {
         return fromStation;
     }
 
+    public void setFromStation(String fromStation) {
+        this.fromStation = fromStation;
+    }
+
     public String getToStation() {
         return toStation;
+    }
+
+    public void setToStation(String toStation) {
+        this.toStation = toStation;
     }
 
     public Scheduling getRequestedTimeOfDeparture() {
         return RequestedTimeOfDeparture;
     }
 
+    public void setRequestedTimeOfDeparture(Scheduling requestedTimeOfDeparture) {
+        RequestedTimeOfDeparture = requestedTimeOfDeparture;
+    }
+
     public boolean isTripSegmented() {
         return isTripSegmented;
+    }
+
+    public void setTripSegmented(boolean tripSegmented) {
+        isTripSegmented = tripSegmented;
+    }
+
+    public boolean isTimeDefChoice() {
+        return timeDefChoice;
+    }
+
+    public void setTimeDefChoice(boolean timeDefChoice) {
+        this.timeDefChoice = timeDefChoice;
+    }
+
+    public int getSerialNumber() {
+        return serialNumber;
     }
 }
