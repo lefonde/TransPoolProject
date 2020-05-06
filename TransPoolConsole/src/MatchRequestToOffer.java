@@ -45,6 +45,8 @@ public class MatchRequestToOffer extends Executable {
                 ,engine.calculateTripCost(selectedTripOffer)
                 ,engine.calculateArrivalTime(selectedTripOffer)
                 ,engine.averageFuelCost(selectedTripOffer));
+
+        selectedTripOffer.addHitchhiker(selectedTripRequest);
     }
 
     private void printTripRequestsTable() {

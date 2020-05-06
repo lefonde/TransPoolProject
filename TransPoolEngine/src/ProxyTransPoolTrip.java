@@ -11,7 +11,8 @@ public class ProxyTransPoolTrip {
 
     private String owner;
     private int capacity;
-    private List<TripRequest> members;
+    private boolean isCarFull;
+    private List<TripRequest> hitchhikers;
     private int ppk;
     private String route;
     private ProxyScheduling scheduling;
@@ -26,14 +27,21 @@ public class ProxyTransPoolTrip {
         this.route= theTransPoolTrip.getRoute().getPath();
         this.scheduling= new ProxyScheduling(theTransPoolTrip.getScheduling());
         this.serialNumber= ++counter;
-        this.members= new ArrayList<TripRequest>();
+        this.hitchhikers = new ArrayList<TripRequest>();
+        isCarFull = false;
     }
 
-    public void setMembers(List<TripRequest> members) {
-        this.members = members;
+    public boolean isCarFull() {
+        return isCarFull;
     }
-    public List<TripRequest> getMembers(){
-        return members;
+
+    public void addHitchhiker(TripRequest hitchhiker) {
+        this.hitchhikers.add(hitchhiker);
+        isCarFull = hitchhikers.size() == capacity ? true : false;
+        hitchhiker.setRequestAsMatched();
+    }
+    public List<TripRequest> getHitchhikers(){
+        return hitchhikers;
     }
 
     public String getOwner() {        return owner;    }
