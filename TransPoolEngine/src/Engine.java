@@ -157,7 +157,7 @@ public class Engine {
         return tripLength * trip.getPPK();
     }
 //TODO:
-    public int averageFuelConsumption(ProxyTransPoolTrip trip) {
+    /*public int averageFuelConsumption(ProxyTransPoolTrip trip) {
         double liters = 0;
         Path path = null;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
@@ -165,7 +165,7 @@ public class Engine {
             path=data.GetPath(pathsNames[i], pathsNames[i+1]);
             liters += path != null ? (double)(path.getLength()/path.getFuelConsumption()) : 0;
         return tripLength * trip.getPPK();
-    }
+    }*/
     public Map<String,List<String>> gettingOffMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOffMap = new HashMap<String, List<String>>();
