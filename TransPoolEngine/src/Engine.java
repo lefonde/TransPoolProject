@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 import Exceptions.TimeException;
 import Exceptions.NoSuchStopException;
 import Generated.*;
-import com.sun.javafx.collections.MappingChange;
-import com.sun.xml.internal.fastinfoset.util.CharArray;
 
 public class Engine {
 
@@ -169,7 +167,7 @@ public class Engine {
     public Map<String,List<String>> gettingOffMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOffMap = new HashMap<String, List<String>>();
-      trip.getMembers().stream().forEach(x-> {
+      trip.getHitchhikers().stream().forEach(x-> {
           if(!gettingOffMap.containsKey(x.getToStation()))
                 gettingOffMap.put(x.getToStation(), new ArrayList<String>());
           gettingOffMap.get(x.getToStation()).add(x.getNameOfApplicant());
@@ -179,7 +177,7 @@ public class Engine {
     public Map<String,List<String>> gettingOnMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOnMap = new HashMap<String, List<String>>();
-        trip.getMembers().stream().forEach(x-> {
+        trip.getHitchhikers().stream().forEach(x-> {
             if(!gettingOnMap.containsKey(x.getFromStation()))
                gettingOnMap.put(x.getFromStation(), new ArrayList<String>());
             gettingOnMap.get(x.getFromStation()).add(x.getNameOfApplicant());
