@@ -1,6 +1,8 @@
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,12 +24,12 @@ public class Engine {
     }
 
     public Engine() {
-        //loadDataFromXml("Resources/ex1-small");
+        //loadDataFromXml("Resources/ex1-small.xml");
     }
 
-    public void loadDataFromXml(String xmlPath) {
-        InputStream inputStream = Engine.class.getResourceAsStream(xmlPath);
-
+    public void loadDataFromXml(String xmlPath) throws FileNotFoundException {
+        //InputStream inputStream = FileInputStream(xmlPath);
+        FileInputStream inputStream = new FileInputStream(xmlPath);
         try {
             TransPool transPoolData = deserializeFrom(inputStream);
             data.loadData(transPoolData);
