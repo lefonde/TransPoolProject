@@ -24,7 +24,7 @@ public class Menu extends MenuComponent {
         }
 
         int selection = UserInputUtils.PromptUserInputFromRange(1, i);
-
+        if(selection == -1) return;
         subMenus.get(selection - 1).execute();
     }
 

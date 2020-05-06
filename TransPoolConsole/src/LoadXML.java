@@ -17,6 +17,7 @@ public class LoadXML extends Executable {
         } catch (FileNotFoundException e) {
             System.out.println("Could not find the file specified");
         }
+        System.out.println("data loaded successfully!");
     }
 
     public static Executable getInstance() {

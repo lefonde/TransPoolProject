@@ -27,7 +27,7 @@ public class ProxyTransPoolTrip {
         this.route= theTransPoolTrip.getRoute().getPath();
         this.scheduling= new ProxyScheduling(theTransPoolTrip.getScheduling());
         this.serialNumber= ++counter;
-        this.hitchhikers = new ArrayList<TripRequest>();
+        this.hitchhikers = new ArrayList<>();
         isCarFull = false;
     }
 
@@ -38,36 +38,28 @@ public class ProxyTransPoolTrip {
     public void addHitchhiker(TripRequest hitchhiker) {
         this.hitchhikers.add(hitchhiker);
         isCarFull = hitchhikers.size() == capacity ? true : false;
-        hitchhiker.setRequestAsMatched();
+        hitchhiker.CloseRequest();
     }
+
     public List<TripRequest> getHitchhikers(){
         return hitchhikers;
     }
 
-    public String getOwner() {        return owner;    }
+    public String getOwner() { return owner; }
 
-    public void setOwner(String value) {        this.owner = value;    }
-
-    public int getSerialNumber() {        return serialNumber;    }
+    public int getSerialNumber() { return serialNumber; }
 
     public int getCapacity() {
         return capacity;
     }
-    public void setCapacity(int value) {this.capacity = value;    }
 
-    public int getPPK() {return ppk;    }
-
-    public void setPPK(int value) { this.ppk = value;    }
+    public int getPPK() { return ppk; }
 
     public String getRoute() {
         return route;
     }
 
-    public void setRoute(String value) {       this.route = value;    }
-
-    public ProxyScheduling getScheduling() {       return scheduling;    }
-
-    public void setScheduling(ProxyScheduling value) {        this.scheduling = value;    }
+    public ProxyScheduling getScheduling() { return scheduling;}
 
 }
 

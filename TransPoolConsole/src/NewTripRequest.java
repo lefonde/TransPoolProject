@@ -27,8 +27,6 @@ public class NewTripRequest extends Executable {
         String usersInput = (new Scanner(System.in)).nextLine();
         String[] inputs = usersInput.replaceAll(" ","").split(",");
 
-        //if(!engine.IsPathValid(inputs[1], inputs[2])) System.out.println("No Path between the two stops!");
-
         System.out.println(TIME_REQUEST_PROMPT);
         String usersTimeInput = (new Scanner(System.in)).nextLine();
         String[] timeInputs = usersTimeInput.replaceAll(" ","").split(",");
@@ -40,6 +38,7 @@ public class NewTripRequest extends Executable {
         } catch (NoSuchStopException e) {
             System.out.println(e.getMessage());
         }
+        System.out.println("Trip added successfully!");
     }
 
     public static Executable getInstance() {

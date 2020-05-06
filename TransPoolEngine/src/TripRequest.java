@@ -12,7 +12,7 @@ public class TripRequest {
     private boolean isTripSegmented;
     private boolean timeDefChoice;//departure=0, arrival=1
 
-    private boolean isRequestMatched;
+    private boolean isOpenRequest;
     //private LocalDateTime RequestedTimeOfDeparture;
 
     TripRequest(String nameOfApplicant, String fromStation, String toStation,Scheduling requestedTime, boolean timeDefChoice, boolean isTripSegmented) {
@@ -24,14 +24,16 @@ public class TripRequest {
         this.timeDefChoice=timeDefChoice;
         this.isTripSegmented = isTripSegmented;
         this.serialNumber=++counter;
-        isRequestMatched = false;
+        isOpenRequest = true;
     }
 
     public String getNameOfApplicant() {
         return nameOfApplicant;
     }
 
-    public void setRequestAsMatched() { isRequestMatched = true; }
+    public boolean IsOpenRequest() { return isOpenRequest; }
+
+    public void CloseRequest() { isOpenRequest = false; }
 
     public void setNameOfApplicant(String nameOfApplicant) {
         this.nameOfApplicant = nameOfApplicant;

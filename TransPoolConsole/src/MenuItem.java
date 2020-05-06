@@ -10,7 +10,7 @@ public class MenuItem extends MenuComponent {
     }
 
     @Override
-    public void execute() { //run command
+    public void execute() {
         command.Execute();
         prevMenu.execute();
     }

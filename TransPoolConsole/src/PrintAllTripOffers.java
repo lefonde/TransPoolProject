@@ -13,42 +13,74 @@ public class PrintAllTripOffers extends Executable {
         List<ProxyTransPoolTrip> plannedTripsList = engine.getPlannedTrips();
         int countTrips = plannedTripsList.size();
         System.out.println("There are: " + countTrips + " trips in the system:\n");
+        printTripOffersTable(plannedTripsList);
 
-        for (ProxyTransPoolTrip trip : plannedTripsList) {
-            System.out.println(" Trip serial number: " + trip.getSerialNumber() + "\n"
-                    + "Trip owner: " + trip.getOwner() + "\n"
-                    + "Trip route: " + trip.getRoute() + "\n"
-                    + "Trip cost: " + engine.calculateTripCost(trip) + "\n"
-                    + "Capacity: " + trip.getCapacity() + "\n"
-                    + "Departure: " + engine.printDepartureTime(trip) + "\n"
-                    + "Arrival: " + engine.calculateArrivalTime(trip) + "\n"
-                    + "members serial number: ");
-            printMembersSerialNumber(trip);
-            System.out.println("The trip stops at:");
-            printTripPlan(trip);
-            System.out.println("Trip fuel average cost: " +engine.averageFuelConsumption(trip) +"\n");
+    }
+
+    private void printTripOffersTable(List<ProxyTransPoolTrip> tripsList) {
+        StringBuilder tableSB = new StringBuilder();
+
+        tableSB.append("No.    Serial No.   Name             Route                 Cost       ETA        Avg. Fuel   Seats Avail   Hitchhikers No.   Hitchhikers Name   From                   To\n");
+        tableSB.append("-----  -----------  ---------------  --------------------  ---------  ---------  ----------  ------------  ----------------  -----------------  ---------------------  ---------------------\n");
+
+        int offerNumber = 1;
+        for (ProxyTransPoolTrip tripOffer : tripsList) {
+            String [] stopsNames = tripOffer.getRoute().replaceAll(" ", "").split(",");
+            List<TripRequest> hitchhikers = tripOffer.getHitchhikers();
+
+            tableSB.append(String.format("%-6d %-12d %-16s %-21s %-10d %-10s %-11f %-14d"
+                    , offerNumber++
+                    , tripOffer.getSerialNumber()
+                    , tripOffer.getOwner()
+                    , stopsNames[0]
+                    , engine.calculateTripCost(tripOffer)
+                    , engine.calculateArrivalTime(tripOffer)
+                    , engine.averageFuelConsumption(tripOffer)
+                    , tripOffer.getCapacity() - hitchhikers.size()));
+
+            if(hitchhikers.size() != 0)
+                tableSB.append(String.format("%-17d %-18s %-22s %-22s\n"
+                        , hitchhikers.get(0).getSerialNumber()
+                        , hitchhikers.get(0).getNameOfApplicant()
+                        , hitchhikers.get(0).getFromStation()
+                        , hitchhikers.get(0).getToStation()
+                        ));
+
+            AppendLeftOvers(tableSB, stopsNames, hitchhikers);
+            tableSB.append("\n");
         }
 
+        System.out.println(tableSB);
     }
 
-    public void printMembersSerialNumber(ProxyTransPoolTrip trip) {
+    private StringBuilder AppendLeftOvers(StringBuilder tableSB, String[] stopsNames, List<TripRequest> hitchhikers) {
+        int i;
 
-        trip.getHitchhikers().stream().forEach(y -> System.out.println(y.getSerialNumber() + ","));
-    }
-
-    public void printTripPlan(ProxyTransPoolTrip plannedTrip) {
-        Map<String, List<String>> gettingOnMap = engine.gettingOnMap(plannedTrip);
-        Map<String, List<String>> gettingOffMap = engine.gettingOffMap(plannedTrip);
-
-        for (String key : gettingOnMap.keySet()) {
-            System.out.println(" stop number " + key.indexOf(key) + " is: " + key);
-            System.out.println("getting on the ride: ");
-            gettingOnMap.get(key).stream().forEach(x -> System.out.print(x + ", "));
-            System.out.println("is getting off the ride: ");
-            gettingOffMap.get(key).stream().forEach(x -> System.out.print(x + ", "));
+        for(i = 1 ; i < Math.min(stopsNames.length, hitchhikers.size()) ; i++) {
+            tableSB.append(String.format("                                     %-69s %-17d %-18s %-22s %-22s\n"
+                    , stopsNames[i]
+                    , hitchhikers.get(i).getSerialNumber()
+                    , hitchhikers.get(i).getNameOfApplicant()
+                    , hitchhikers.get(i).getFromStation()
+                    , hitchhikers.get(i).getToStation()));
         }
 
+        for(i = i ; i < stopsNames.length ; i++) {
+            tableSB.append(String.format("                                     %-69s\n", stopsNames[i]));
+        }
+
+        for(i = i ; i < hitchhikers.size() ; i++) {
+            tableSB.append(String.format("%104s %-17d %-18s %-21s %-22s\n"
+                    , ""
+                    , hitchhikers.get(i).getSerialNumber()
+                    , hitchhikers.get(i).getNameOfApplicant()
+                    , hitchhikers.get(i).getFromStation()
+                    , hitchhikers.get(i).getToStation()));
+        }
+
+        return tableSB;
     }
+
     public static Executable getInstance() {
         return instance;
     }

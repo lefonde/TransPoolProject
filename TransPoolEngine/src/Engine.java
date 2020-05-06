@@ -99,6 +99,8 @@ public class Engine {
 
         result = data.GetAllPlannedTrips().stream()
                 .filter(trip -> {
+                    if(trip.isCarFull()) return false;
+
                     String [] stops = trip.getRoute().split("[ \\t\\n\\,\\?\\;\\.\\:\\!]");
                     return (stops[0].equalsIgnoreCase(fromStation) && stops[stops.length - 1].equalsIgnoreCase(toStation));
                 })
@@ -164,6 +166,7 @@ public class Engine {
             liters += path != null ? (double)(path.getLength()/path.getFuelConsumption()) : 0;
         return liters;
     }
+
     public Map<String,List<String>> gettingOffMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOffMap = new HashMap<String, List<String>>();
@@ -174,6 +177,7 @@ public class Engine {
       });
       return gettingOffMap;
     }
+
     public Map<String,List<String>> gettingOnMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOnMap = new HashMap<String, List<String>>();
@@ -194,6 +198,10 @@ public class Engine {
 
     public List<TripRequest> GetAllTripRequests() {
         return tripRequestsList;
+    }
+
+    public List<TripRequest> GetOpenTripRequests() {
+        return tripRequestsList.stream().filter(trip -> trip.IsOpenRequest()).collect(Collectors.toList());
     }
 
     /*private boolean checkTripExist(String fromStopName, String toStopName) {

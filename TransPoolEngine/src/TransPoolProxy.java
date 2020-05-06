@@ -1,12 +1,10 @@
 import Generated.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TransPoolProxy {
 
@@ -108,8 +106,6 @@ public class TransPoolProxy {
         return true;
     }
 
-
-
     private boolean validateStopsInMap(TransPool data) {
         List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
         int width= data.getMapDescriptor().getMapBoundries().getWidth();
@@ -141,9 +137,6 @@ public class TransPoolProxy {
         return true;
     }
 
-    public int GetMapLengthBoundary() {
-        return data.getMapDescriptor().getMapBoundries().getLength();
-    }
     public void initPlannedTrips()
     {
         List<TransPoolTrip> transPoolTripList=data.getPlannedTrips().getTransPoolTrip();
@@ -154,12 +147,8 @@ public class TransPoolProxy {
         }
     }
 
-    public int GetMapWidthBoundary() {
-        return data.getMapDescriptor().getMapBoundries().getWidth();
-    }
-
     public List<ProxyTransPoolTrip> getTransPoolTripList()  {
-        if (transPoolTrips == null) transPoolTrips = new ArrayList<ProxyTransPoolTrip>();
+        if (transPoolTrips == null) transPoolTrips = new ArrayList<>();
         return this.transPoolTrips;
     }
 
@@ -188,10 +177,6 @@ public class TransPoolProxy {
     public List<ProxyTransPoolTrip> GetAllPlannedTrips() {
         return transPoolTrips;
     }
-
-    /*public void GetPlannedTrip() {}*/
-
-    /*public void GetRoute() {}*/
 
     public List<Stop> GetAllStops() {
         return data.getMapDescriptor().getStops().getStop();
