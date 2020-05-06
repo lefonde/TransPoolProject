@@ -11,6 +11,8 @@ import Exceptions.TimeException;
 import Exceptions.NoSuchStopException;
 import Generated.*;
 
+import static java.lang.Math.round;
+
 public class Engine {
 
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "Generated";
@@ -159,10 +161,11 @@ public class Engine {
         double liters = 0;
         Path path = null;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
-        for(int i = 0 ; i < pathsNames.length - 1 ; i++)
-            path=data.GetPath(pathsNames[i], pathsNames[i+1]);
-            liters += path != null ? (double)(path.getLength()/path.getFuelConsumption()) : 0;
-        return liters;
+        for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
+            path = data.GetPath(pathsNames[i], pathsNames[i + 1]);
+            liters += path != null ?  ((double)path.getLength()/ (double) path.getFuelConsumption()) : 0;
+
+        } return (int) Math.round(liters);
     }
     public Map<String,List<String>> gettingOffMap(ProxyTransPoolTrip trip)
     {
