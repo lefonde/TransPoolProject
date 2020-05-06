@@ -36,7 +36,7 @@ public class MatchRequestToOffer extends Executable {
         userSelection = UserInputUtils.PromptUserInputFromRange(1, tripsList.size());
         ProxyTransPoolTrip selectedTripOffer = tripsList.get(userSelection - 1);
 
-        MatchedTripRequest match = new MatchedTripRequest(selectedTripRequest.getNameOfApplicant()
+       /* MatchedTripRequest match = new MatchedTripRequest(selectedTripRequest.getNameOfApplicant()
                 , selectedTripRequest.getFromStation()
                 , selectedTripRequest.getToStation()
                 , selectedTripRequest.getRequestedTimeOfDeparture()
@@ -44,7 +44,7 @@ public class MatchRequestToOffer extends Executable {
                 ,false,selectedTripOffer.getOwner()
                 ,engine.calculateTripCost(selectedTripOffer)
                 ,engine.calculateArrivalTime(selectedTripOffer)
-                ,engine.averageFuelCost(selectedTripOffer));
+                ,engine.averageFuelConsumption(selectedTripOffer));*/
 
         selectedTripOffer.addHitchhiker(selectedTripRequest);
     }
@@ -82,11 +82,12 @@ public class MatchRequestToOffer extends Executable {
                     , tripOffer.getOwner()
                     , engine.calculateTripCost(tripOffer)
                     , engine.calculateArrivalTime(tripOffer)
-                    , engine.averageFuelCost(tripOffer)));
+                    , engine.averageFuelConsumption(tripOffer)));
         }
 
         System.out.println(tableSB);
     }
+
     public static Executable getInstance() {
         return instance;
     }
