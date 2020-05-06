@@ -73,9 +73,12 @@ public class Engine {
     public String calculateArrivalTime(ProxyTransPoolTrip trip) {
         double totalTripTime=calculateTripLength(trip);
         int departure= trip.getScheduling().getHourStart();
-        double minutes = totalTripTime %60;
-        int hour= (int) (totalTripTime/60+departure);
-        return (hour +":"+minutes);
+        int minutes = (int) (totalTripTime %60)*60;
+        int hour= (int) (totalTripTime/60 +departure);
+        if (minutes<10)
+            return (hour +":0"+minutes);
+        else
+            return (hour +":"+minutes);
     }
 
 

@@ -1,4 +1,3 @@
-import Exceptions.NoSuchStopException;
 import Generated.*;
 
 import java.util.ArrayList;
@@ -11,11 +10,9 @@ import java.util.stream.Collectors;
 public class TransPoolProxy {
 
     protected TransPool data;
-    protected ArrayList<ProxyTransPoolTrip> transPoolTrip = new ArrayList<ProxyTransPoolTrip>();
+    protected ArrayList<ProxyTransPoolTrip> transPoolTrips = new ArrayList<ProxyTransPoolTrip>();
 
-
-
-    public void loadData(TransPool data) {
+    public void loadData(TransPool data)  {
         this.data = data;
         try {
             if (!validateDuplicateStops(data)) {
@@ -28,40 +25,85 @@ public class TransPoolProxy {
                 Thread.sleep(5000);
                 System.exit(0);
             }
-            if (!validateUniqueStopsInMap(data)){
+
+            if (!validateUniqueStopsInMap(data)) {
                 System.out.println("error in XML, There are two stops in the same coordinates");
                 Thread.sleep(5000);
                 System.exit(0);
             }
-            if (!validateExistingPaths(data)){
-                System.out.println("error in XML, The is a path in the trans pool trips that are not exist");
+
+            if (!validateExistingPaths(data)) {
+                System.out.println("error in XML, There is a path in the trans pool trips that are not exist");
                 Thread.sleep(5000);
                 System.exit(0);
             }
+            if (!(validMapBoundries(data))) {
+                System.out.println("error in XML, There is a path in the trans pool trips that are not exist");
+                Thread.sleep(5000);
+                System.exit(0);
+            }
+            if (!(validStopsInAllPaths(data))) {
+                System.out.println("error in XML, There are paths that include stops that are not exist");
+                Thread.sleep(5000);
+                System.exit(0);
+            }
+        } catch (InterruptedException e) {
         }
-        catch (InterruptedException e) {}
-
-        // TODO: validate no two stops on the same coord
-        // TODO: validate stops in paths exist
-        // TODO: validate each path contains all relevant information
-        // TODO: validate routes in TransPoolTrips go through existing sequential paths
-        // TODO: validate each TransPoolTrip contain all relevant information
-    }
 
     private boolean validateExistingPaths(TransPool data) {
 
     }
+    private boolean validateUniqueStopsInMap(TransPool data) {
+            ArrayList<Stop> stopList= (ArrayList<Stop>) data.getMapDescriptor().getStops().getStop();
+            int currX, currY, size=stopList.size();
 
-   /* private boolean validateUniqueStopsInMap(TransPool data) {
-        List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
-       int currX,currY;
-        for (Stop s:stopList) {
-           currX = s.getX();
-           currY = s.getY();
-           for
+           for (int i=0;i<size-1;i++) {
+               currX=stopList.get(i).getX();
+               currY=stopList.get(i).getY();
 
+               for(int j=i+1;j<size-1;j++)
+               {
+                   if(currX==stopList.get(j).getX())
+                       if(currY==stopList.get(j).getY())
+                           return false;
+               }
+            }
+           return true;
         }
-    }*/
+    private boolean validStopsInAllPaths(TransPool data) {
+        List<TransPoolTrip> transPoolTripList = data.getPlannedTrips().getTransPoolTrip();
+        List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
+        String[] stopsNames;
+        for (TransPoolTrip trip : transPoolTripList) {
+            stopsNames = trip.getRoute().getPath().replaceAll(" ", "").split(",");
+            for (String s:stopsNames)
+                if (!stopList.contains(s))
+                    return false;
+        }
+        return true;
+    }
+    private boolean validMapBoundries(TransPool data) {
+    int width = data.getMapDescriptor().getMapBoundries().getWidth();
+    int lenght = data.getMapDescriptor().getMapBoundries().getLength();
+    return (width>=6 && width<=100 && lenght>=6 && lenght<=100);
+    }
+    private boolean validateExistingPaths(TransPool data) {
+       List<TransPoolTrip> transPoolTripList= data.getPlannedTrips().getTransPoolTrip();
+        String[] stopsNames;
+        boolean valid=true;
+        for (TransPoolTrip trip: transPoolTripList) {
+            {
+                stopsNames = trip.getRoute().getPath().replaceAll(" ", "").split(",");
+                for (int i = 0; i < stopsNames.length - 1; i++) {
+                    if( GetPath(stopsNames[i], stopsNames[i + 1])==null)
+                        valid=false;
+                }
+            }
+       }
+        return valid;
+    }
+
+
 
     private boolean validateStopsInMap(TransPool data) {
         List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
