@@ -26,7 +26,7 @@ public class PrintAllTripOffers extends Executable {
             printMembersSerialNumber(trip);
             System.out.println("The trip stops at:");
             printTripPlan(trip);
-            System.out.println("Trip fuel average cost: " + "\n");
+            System.out.println("Trip fuel average cost: " +engine.averageFuelConsumption(trip) +"\n");
         }
 
     }
