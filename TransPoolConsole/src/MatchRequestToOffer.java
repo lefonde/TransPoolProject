@@ -44,7 +44,7 @@ public class MatchRequestToOffer extends Executable {
                 ,false,selectedTripOffer.getOwner()
                 ,engine.calculateTripCost(selectedTripOffer)
                 ,engine.calculateArrivalTime(selectedTripOffer)
-                ,engine.averageFuelCost(selectedTripOffer));
+                ,(int)engine.averageFuelConsumption(selectedTripOffer));
     }
 
     private void printTripRequestsTable() {
