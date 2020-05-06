@@ -21,8 +21,8 @@ public class MatchRequestToOffer extends Executable {
         int numberOfRequests = engine.GetAllTripRequests().size();
         printTripRequestsTable();
         int userSelection = UserInputUtils.PromptUserInputFromRange(1, numberOfRequests);
-        TripRequest selectedTripRequest = engine.GetAllTripRequests().get(userSelection - 1);
-        List<ProxyTransPoolTrip> tripsList = engine.GetAllTripsInRoute(selectedTripRequest.getFromStation()
+        TripRequest selectedTripRequest = engine.GetAllTripRequests().get(userSelection - 1);// the chosen trip request
+        List<ProxyTransPoolTrip> tripsList = engine.GetAllTripsInRoute(selectedTripRequest.getFromStation()// all the relevant trips for the requst
                 , selectedTripRequest.getToStation()
                 , selectedTripRequest.getRequestedTimeOfDeparture());
 
