@@ -80,7 +80,7 @@ public class MatchRequestToOffer extends Executable {
                     , tripOffer.getOwner()
                     , engine.calculateTripCost(tripOffer)
                     , engine.calculateArrivalTime(tripOffer)
-                    , engine.averageFuelCost(tripOffer)));
+                    , (int)engine.averageFuelConsumption(tripOffer)));
         }
 
         System.out.println(tableSB);
