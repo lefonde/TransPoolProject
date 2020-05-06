@@ -16,12 +16,16 @@ public class ConsoleUserInterface {
         Executable printAllTripOffers = PrintAllTripOffers.getInstance();
         Executable newTripRequest = NewTripRequest.getInstance();
         Executable mathRequestToOffer = MatchRequestToOffer.getInstance();
+        Executable loadXML = LoadXML.getInstance();
+
         printAllTripOffers.loadEngine(engine);
         newTripRequest.loadEngine(engine);
         mathRequestToOffer.loadEngine(engine);
+        loadXML.loadEngine(engine);
 
         printSplashScreen();
         Menu mainMenu = new Menu("Main Menu");
+        mainMenu.add(new MenuItem("Load XML",loadXML, mainMenu));
         mainMenu.add(new MenuItem("Make a new trip", newTripRequest ,mainMenu));
         mainMenu.add(new MenuItem("Show current status of all trip offers", printAllTripOffers, mainMenu));
         mainMenu.add(new MenuItem("Show current status of all trip requests", printAllTripOffers, mainMenu));

@@ -12,8 +12,9 @@ public class TransPoolProxy {
     protected TransPool data;
     protected ArrayList<ProxyTransPoolTrip> transPoolTrips = new ArrayList<ProxyTransPoolTrip>();
 
-    public void loadData(TransPool data)  {
+    public void loadData(TransPool data) {
         this.data = data;
+
         try {
             if (!validateDuplicateStops(data)) {
                 System.out.println("error in XML, There are duplicate stops");
@@ -37,7 +38,7 @@ public class TransPoolProxy {
                 Thread.sleep(5000);
                 System.exit(0);
             }
-            if (!(validMapBoundries(data))) {
+            if (!(validMapBoundaries(data))) {
                 System.out.println("error in XML, There is a path in the trans pool trips that are not exist");
                 Thread.sleep(5000);
                 System.exit(0);
@@ -49,27 +50,26 @@ public class TransPoolProxy {
             }
         } catch (InterruptedException e) {
         }
-
-    private boolean validateExistingPaths(TransPool data) {
-
     }
-    private boolean validateUniqueStopsInMap(TransPool data) {
-            ArrayList<Stop> stopList= (ArrayList<Stop>) data.getMapDescriptor().getStops().getStop();
-            int currX, currY, size=stopList.size();
 
-           for (int i=0;i<size-1;i++) {
-               currX=stopList.get(i).getX();
-               currY=stopList.get(i).getY();
+    private boolean validateUniqueStopsInMap (TransPool data){
+        ArrayList<Stop> stopList = (ArrayList<Stop>) data.getMapDescriptor().getStops().getStop();
+        int currX, currY, size = stopList.size();
 
-               for(int j=i+1;j<size-1;j++)
-               {
-                   if(currX==stopList.get(j).getX())
-                       if(currY==stopList.get(j).getY())
-                           return false;
-               }
+        for (int i = 0; i < size - 1; i++) {
+            currX = stopList.get(i).getX();
+            currY = stopList.get(i).getY();
+
+            for (int j = i + 1; j < size - 1; j++) {
+                if (currX == stopList.get(j).getX())
+                    if (currY == stopList.get(j).getY())
+                        return false;
             }
-           return true;
         }
+
+        return true;
+     }
+
     private boolean validStopsInAllPaths(TransPool data) {
         List<TransPoolTrip> transPoolTripList = data.getPlannedTrips().getTransPoolTrip();
         List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
@@ -80,13 +80,17 @@ public class TransPoolProxy {
                 if (!stopList.contains(s))
                     return false;
         }
+
         return true;
     }
-    private boolean validMapBoundries(TransPool data) {
-    int width = data.getMapDescriptor().getMapBoundries().getWidth();
-    int lenght = data.getMapDescriptor().getMapBoundries().getLength();
-    return (width>=6 && width<=100 && lenght>=6 && lenght<=100);
+
+    private boolean validMapBoundaries(TransPool data) {
+        int width = data.getMapDescriptor().getMapBoundries().getWidth();
+        int lenght = data.getMapDescriptor().getMapBoundries().getLength();
+
+        return (width>=6 && width<=100 && lenght>=6 && lenght<=100);
     }
+
     private boolean validateExistingPaths(TransPool data) {
        List<TransPoolTrip> transPoolTripList= data.getPlannedTrips().getTransPoolTrip();
         String[] stopsNames;
@@ -110,15 +114,18 @@ public class TransPoolProxy {
         int width= data.getMapDescriptor().getMapBoundries().getWidth();
         int length= data.getMapDescriptor().getMapBoundries().getLength();
         AtomicReference<Boolean> valid= new AtomicReference<>(true);
+
         stopList.stream().forEach(x-> {
             if( 0>x.getX() || x.getX()>width || 0>x.getY() || x.getY()>length) {
             valid.set(false);
         }});
+
         return valid.get();
     }
 
     private boolean validateDuplicateStops(TransPool data) {
         List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
+
         return(areAllUnique(stopList));
     }
 
@@ -132,6 +139,7 @@ public class TransPoolProxy {
 
         return true;
     }
+
     public int GetMapLengthBoundary() {
         return data.getMapDescriptor().getMapBoundries().getLength();
     }
@@ -144,6 +152,7 @@ public class TransPoolProxy {
             transPoolTrips.add(newTrip);
         }
     }
+
     public int GetMapWidthBoundary() {
         return data.getMapDescriptor().getMapBoundries().getWidth();
     }

@@ -22,16 +22,16 @@ public class Engine {
     }
 
     public Engine() {
-        loadDataFromXml("Resources/ex1-small");
-        data.initPlannedTrips();
+        //loadDataFromXml("Resources/ex1-small");
     }
 
     public void loadDataFromXml(String xmlPath) {
-        InputStream inputStream = Engine.class.getResourceAsStream("Resources/ex1-small.xml");
+        InputStream inputStream = Engine.class.getResourceAsStream(xmlPath);
 
         try {
             TransPool transPoolData = deserializeFrom(inputStream);
             data.loadData(transPoolData);
+            data.initPlannedTrips();
         } catch (JAXBException e) {
             e.printStackTrace();
         }

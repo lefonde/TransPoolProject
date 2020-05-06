@@ -25,7 +25,7 @@ public class UserInputUtils {
         return number <= topLimit && number >= bottomLimit;
     }
 
-    private static String getUserInput() {
+    public static String getUserInput() {
         Scanner in = new Scanner(System.in);
         return  in.next();
     }

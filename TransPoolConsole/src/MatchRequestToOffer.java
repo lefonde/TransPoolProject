@@ -21,10 +21,10 @@ public class MatchRequestToOffer extends Executable {
         int numberOfRequests = engine.GetAllTripRequests().size();
         printTripRequestsTable();
         int userSelection = UserInputUtils.PromptUserInputFromRange(1, numberOfRequests);
-        TripRequest selectedTrip = engine.GetAllTripRequests().get(userSelection - 1);
-        List<ProxyTransPoolTrip> tripsList = engine.GetAllTripsInRoute(selectedTrip.getFromStation()
-                , selectedTrip.getToStation()
-                , selectedTrip.getRequestedTimeOfDeparture());
+        TripRequest selectedTripRequest = engine.GetAllTripRequests().get(userSelection - 1);
+        List<ProxyTransPoolTrip> tripsList = engine.GetAllTripsInRoute(selectedTripRequest.getFromStation()
+                , selectedTripRequest.getToStation()
+                , selectedTripRequest.getRequestedTimeOfDeparture());
 
         if(tripsList.size() > 1) {
             System.out.println(String.format("There are %d relevant trip offers found. How many would you like to display?", tripsList.size()));
@@ -34,6 +34,17 @@ public class MatchRequestToOffer extends Executable {
 
         printTripOffersTable(tripsList);
         userSelection = UserInputUtils.PromptUserInputFromRange(1, tripsList.size());
+        ProxyTransPoolTrip selectedTripOffer = tripsList.get(userSelection - 1);
+
+        MatchedTripRequest match = new MatchedTripRequest(selectedTripRequest.getNameOfApplicant()
+                , selectedTripRequest.getFromStation()
+                , selectedTripRequest.getToStation()
+                , selectedTripRequest.getRequestedTimeOfDeparture()
+                ,false
+                ,false,selectedTripOffer.getOwner()
+                ,engine.calculateTripCost(selectedTripOffer)
+                ,engine.calculateArrivalTime(selectedTripOffer)
+                ,engine.averageFuelCost(selectedTripOffer));
     }
 
     private void printTripRequestsTable() {
@@ -63,13 +74,13 @@ public class MatchRequestToOffer extends Executable {
         tableSB.append("-----  ----------------------  --------------  ------------------  -------------------------\n");
 
         int offerNumber = 1;
-        for (ProxyTransPoolTrip tripRequest : tripsList) {
+        for (ProxyTransPoolTrip tripOffer : tripsList) {
             tableSB.append(String.format("%-6d %-23s %-15d %-19s %d"
                     , offerNumber++
-                    , tripRequest.getOwner()
-                    , engine.calculateTripCost(tripRequest)
-                    , engine.calculateArrivalTime(tripRequest)
-                    , engine.averageFuelCost(tripRequest)));
+                    , tripOffer.getOwner()
+                    , engine.calculateTripCost(tripOffer)
+                    , engine.calculateArrivalTime(tripOffer)
+                    , engine.averageFuelCost(tripOffer)));
         }
 
         System.out.println(tableSB);
