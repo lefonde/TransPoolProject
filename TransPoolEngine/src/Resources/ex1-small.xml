@@ -74,7 +74,7 @@
 			<Owner>Avrum</Owner>
 			<Capacity>4</Capacity>
 			<PPK>10</PPK>
-			<Route path="H,C,D,B,E,G"/>
+			<Route path="C,D,B,E,G"/>
 			<Scheduling hour-start="8"/>
 		</TransPoolTrip>
 	</PlannedTrips>

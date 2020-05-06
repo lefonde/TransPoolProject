@@ -20,7 +20,7 @@ public class PrintAllTripOffers extends Executable {
                     + "Trip route: " + trip.getRoute() + "\n"
                     + "Trip cost: " + engine.calculateTripCost(trip) + "\n"
                     + "Capacity: " + trip.getCapacity() + "\n"
-                    + "Departure: " + trip.getScheduling().getHourStart() + "\n"
+                    + "Departure: " + engine.printDepartureTime(trip) + "\n"
                     + "Arrival: " + engine.calculateArrivalTime(trip) + "\n"
                     + "members serial number: ");
             printMembersSerialNumber(trip);

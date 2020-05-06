@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TransPoolProxy {
 
@@ -72,12 +73,13 @@ public class TransPoolProxy {
 
     private boolean validStopsInAllPaths(TransPool data) {
         List<TransPoolTrip> transPoolTripList = data.getPlannedTrips().getTransPoolTrip();
-        List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
+        List<String> allStopNames = data.getMapDescriptor().getStops().getStop().stream().map((stop) -> stop.getName()).collect(Collectors.toList());
+
         String[] stopsNames;
         for (TransPoolTrip trip : transPoolTripList) {
             stopsNames = trip.getRoute().getPath().replaceAll(" ", "").split(",");
             for (String s:stopsNames)
-                if (!stopList.contains(s))
+                if (!allStopNames.contains(s))
                     return false;
         }
 
@@ -94,17 +96,16 @@ public class TransPoolProxy {
     private boolean validateExistingPaths(TransPool data) {
        List<TransPoolTrip> transPoolTripList= data.getPlannedTrips().getTransPoolTrip();
         String[] stopsNames;
-        boolean valid=true;
         for (TransPoolTrip trip: transPoolTripList) {
             {
                 stopsNames = trip.getRoute().getPath().replaceAll(" ", "").split(",");
                 for (int i = 0; i < stopsNames.length - 1; i++) {
                     if( GetPath(stopsNames[i], stopsNames[i + 1])==null)
-                        valid=false;
+                        return false;
                 }
             }
        }
-        return valid;
+        return true;
     }
 
 

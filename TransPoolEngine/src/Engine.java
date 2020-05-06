@@ -73,7 +73,7 @@ public class Engine {
     public String calculateArrivalTime(ProxyTransPoolTrip trip) {
         double totalTripTime=calculateTripLength(trip);
         int departure= trip.getScheduling().getHourStart();
-        int minutes = (int) (totalTripTime %60)*60;
+        int minutes = (int) (totalTripTime %60);
         int hour= (int) (totalTripTime/60 +departure);
         if (minutes<10)
             return (hour +":0"+minutes);
@@ -83,14 +83,16 @@ public class Engine {
 
 
     public double calculateTripLength (ProxyTransPoolTrip trip) {
-        double totalTripTime=0;
+        double totalTripTimeInMinutes=0;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
+        Path path;
         for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
-            Path path = data.GetPath(pathsNames[i], pathsNames[i+1]);
-            totalTripTime += path != null ? path.getLength() / path.getSpeedLimit() : 0;
+           path = data.GetPath(pathsNames[i], pathsNames[i+1]);
+            totalTripTimeInMinutes+= (((double)path.getLength() /  (double)path.getSpeedLimit())*60);
+
         }
 
-        return totalTripTime*60;
+        return totalTripTimeInMinutes;
     }
     public List<ProxyTransPoolTrip> GetAllTripsInRoute(String fromStation, String toStation, Scheduling requestedTimeOfDeparture) {
         List<ProxyTransPoolTrip> result;
@@ -103,6 +105,14 @@ public class Engine {
                 .collect(Collectors.toList());
 
         return result;
+    }
+
+    public String printDepartureTime(ProxyTransPoolTrip trip ) {
+        int startHour = trip.getScheduling().getHourStart();
+        if(startHour<10)
+            return("0"+startHour+":00");
+        else
+            return (startHour+":00");
     }
 
     protected static class TransPoolDataController {
@@ -136,22 +146,24 @@ public class Engine {
     public int calculateTripCost(ProxyTransPoolTrip trip) {
         int tripLength = 0;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
-
+        Path path;
         for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
-            Path path = data.GetPath(pathsNames[i], pathsNames[i+1]);
+            path = data.GetPath(pathsNames[i], pathsNames[i+1]);
             tripLength += path != null ? path.getLength() : 0;
         }
 
         return tripLength * trip.getPPK();
     }
 //TODO:
-    public int averageFuelCost(ProxyTransPoolTrip trip) {
-        int tripLength = 0;
+    /*public int averageFuelConsumption(ProxyTransPoolTrip trip) {
+        double liters = 0;
+        Path path = null;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
         for(int i = 0 ; i < pathsNames.length - 1 ; i++)
-            tripLength += data.GetPath(pathsNames[i], pathsNames[i+1]).getLength();
+            path=data.GetPath(pathsNames[i], pathsNames[i+1]);
+            liters += path != null ? (double)(path.getLength()/path.getFuelConsumption()) : 0;
         return tripLength * trip.getPPK();
-    }
+    }*/
     public Map<String,List<String>> gettingOffMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOffMap = new HashMap<String, List<String>>();
