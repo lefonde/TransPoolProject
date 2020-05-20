@@ -8,7 +8,6 @@ public class ProxyTransPoolTrip {
     private static int counter = 0;
     private int serialNumber;
 
-
     private String owner;
     private int capacity;
     private boolean isCarFull;
@@ -37,7 +36,7 @@ public class ProxyTransPoolTrip {
 
     public void addHitchhiker(TripRequest hitchhiker) {
         this.hitchhikers.add(hitchhiker);
-        isCarFull = hitchhikers.size() == capacity ? true : false;
+        isCarFull = hitchhikers.size() == capacity;
         hitchhiker.CloseRequest();
     }
 

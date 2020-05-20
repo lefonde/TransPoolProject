@@ -19,17 +19,12 @@ public class Engine {
     private TransPoolProxy data = new TransPoolProxy();
     private ArrayList<TripRequest> tripRequestsList= new ArrayList<TripRequest>();
 
-    public ArrayList<TripRequest> getTripRequestsList() {
-        return tripRequestsList;
-    }
-
     public Engine() {
-        //loadDataFromXml("Resources/ex1-small.xml");
     }
 
     public void loadDataFromXml(String xmlPath) throws FileNotFoundException {
-        //InputStream inputStream = FileInputStream(xmlPath);
         FileInputStream inputStream = new FileInputStream(xmlPath);
+
         try {
             TransPool transPoolData = deserializeFrom(inputStream);
             data.loadData(transPoolData);
@@ -44,27 +39,9 @@ public class Engine {
         if(data.GetStop(fromStopName) == null) throw new NoSuchStopException(fromStopName);
         if(data.GetStop(toStopName) == null) throw new NoSuchStopException(toStopName);
 
-        //boolean isTripExist= checkTripExist(fromStopName, toStopName);
-
         Scheduling time= TransPoolDataController.createSchedule(Hour,Day,"");
         tripRequestsList.add(new TripRequest(name,fromStopName,toStopName,time,timeChoice,false));
     }
-
-    /*private ProxyStop findStop(String stopName) {
-        ProxyStop result = null,
-                tempStop;
-
-        List<ProxyStop> stops = data.getMapDescriptor().getStops().getTheStopList();
-
-        try {
-            result = stops.stream().filter(x -> x.getName().equalsIgnoreCase(stopName)).findFirst().get();
-        }
-        catch (Exception e){
-
-        }
-        return result;
-
-    }*/
 
     private static TransPool deserializeFrom(InputStream in) throws JAXBException {
         JAXBContext jc = JAXBContext.newInstance(JAXB_XML_GAME_PACKAGE_NAME);
@@ -83,15 +60,14 @@ public class Engine {
             return (hour +":"+minutes);
     }
 
-
     public double calculateTripLength (ProxyTransPoolTrip trip) {
         double totalTripTimeInMinutes=0;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
         Path path;
+
         for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
            path = data.GetPath(pathsNames[i], pathsNames[i+1]);
             totalTripTimeInMinutes+= (((double)path.getLength() /  (double)path.getSpeedLimit())*60);
-
         }
 
         return totalTripTimeInMinutes;
@@ -103,20 +79,19 @@ public class Engine {
                 .filter(trip -> {
                     if(trip.isCarFull()) return false;
 
+                    boolean isFromInRoute = false;
                     String [] stops = trip.getRoute().split("[ \\t\\n\\,\\?\\;\\.\\:\\!]");
-                    return (stops[0].equalsIgnoreCase(fromStation) && stops[stops.length - 1].equalsIgnoreCase(toStation));
+
+                    for(int i = 0 ; i < stops.length ; i++) {
+                        if(stops[i].equalsIgnoreCase(fromStation)) isFromInRoute = true;
+                        if(isFromInRoute && stops[i].equalsIgnoreCase(toStation)) return true;
+                    }
+
+                    return false;
                 })
                 .collect(Collectors.toList());
 
         return result;
-    }
-
-    public String printDepartureTime(ProxyTransPoolTrip trip ) {
-        int startHour = trip.getScheduling().getHourStart();
-        if(startHour<10)
-            return("0"+startHour+":00");
-        else
-            return (startHour+":00");
     }
 
     protected static class TransPoolDataController {
@@ -139,9 +114,6 @@ public class Engine {
       return data.GetAllStops();
    }
 
-    /*public List<ProxyPath> getPaths(){
-        return data.getMapDescriptor().getPaths().getPathsList();
-    }*/
 
     public List<ProxyTransPoolTrip> getPlannedTrips() {
         return data.getTransPoolTripList();
@@ -151,6 +123,7 @@ public class Engine {
         int tripLength = 0;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
         Path path;
+
         for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
             path = data.GetPath(pathsNames[i], pathsNames[i+1]);
             tripLength += path != null ? path.getLength() : 0;
@@ -158,39 +131,46 @@ public class Engine {
 
         return tripLength * trip.getPPK();
     }
-//TODO:
+
     public double averageFuelConsumption(ProxyTransPoolTrip trip) {
         double liters = 0;
         Path path = null;
         String[] pathsNames = trip.getRoute().replaceAll(" ","").split(",");
+
         for(int i = 0 ; i < pathsNames.length - 1 ; i++) {
             path = data.GetPath(pathsNames[i], pathsNames[i + 1]);
             liters += path != null ?  ((double)path.getLength()/ (double) path.getFuelConsumption()) : 0;
 
         } return (int) Math.round(liters);
+
     }
 
     public Map<String,List<String>> gettingOffMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOffMap = new HashMap<String, List<String>>();
+
       trip.getHitchhikers().stream().forEach(x-> {
           if(!gettingOffMap.containsKey(x.getToStation()))
                 gettingOffMap.put(x.getToStation(), new ArrayList<String>());
           gettingOffMap.get(x.getToStation()).add(x.getNameOfApplicant());
       });
+
       return gettingOffMap;
     }
 
     public Map<String,List<String>> gettingOnMap(ProxyTransPoolTrip trip)
     {
         Map<String, List<String>> gettingOnMap = new HashMap<String, List<String>>();
+
         trip.getHitchhikers().stream().forEach(x-> {
             if(!gettingOnMap.containsKey(x.getFromStation()))
                gettingOnMap.put(x.getFromStation(), new ArrayList<String>());
             gettingOnMap.get(x.getFromStation()).add(x.getNameOfApplicant());
         });
+
         return gettingOnMap;
     }
+
     public boolean DoesPathExists(String fromStopName, String toStopName) {
         return data.GetPath(fromStopName, toStopName) != null;
     }
@@ -206,32 +186,5 @@ public class Engine {
     public List<TripRequest> GetOpenTripRequests() {
         return tripRequestsList.stream().filter(trip -> trip.IsOpenRequest()).collect(Collectors.toList());
     }
-
-    /*private boolean checkTripExist(String fromStopName, String toStopName) {
-        boolean from = false;
-        boolean to = false;
-
-        List<ProxyTransPoolTrip> transPoolTrip = data.getPlannedTrips().getTransPoolTrip();
-        for (ProxyTransPoolTrip t:transPoolTrip) {
-
-            String[] stops = t.getRoute().getPath().split(",");
-            from = false;
-            to = false;
-
-            for (String s:stops) {
-                if (s.equalsIgnoreCase(fromStopName))
-                {
-                    from=true;
-                }
-                if (s.equalsIgnoreCase(toStopName))
-                {
-                    if(from)
-                        to=true;
-                }
-            }
-        }
-
-        return (from && to);
-    }*/
 }
 
