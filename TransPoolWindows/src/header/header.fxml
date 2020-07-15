@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane minHeight="100.0" minWidth="100.0" prefHeight="150.0" prefWidth="1000.0" snapToPixel="false" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="header.HeaderController">
+   <children>
+      <GridPane layoutX="5.0" prefHeight="150.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="LoadXmlButton" mnemonicParsing="false" onAction="#LoadXmlAction" text="Load XML" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="NewTripRequestButton" mnemonicParsing="false" text="New trip request" onAction="#NewTripRequestAction" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Button>
+            <Button fx:id="NewTripOfferButton" mnemonicParsing="false" onAction="#NewTripOfferAction" text="New trip offer" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="MatchButton" mnemonicParsing="false" onAction="#matchRequestToOfferAction" text="Match trip request to trip offer" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <ProgressBar fx:id="taskProgressBar" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.columnIndex="3" GridPane.columnSpan="2">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </ProgressBar>
+            <Label fx:id="taskMessageLabel" maxWidth="1.7976931348623157E308" styleClass="task-message-label" GridPane.columnIndex="1" />
+            <Label fx:id="progressPercentLabel" maxWidth="1.7976931348623157E308" styleClass="task-counter-label" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</AnchorPane>

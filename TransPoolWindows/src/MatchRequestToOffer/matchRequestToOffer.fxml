@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MatchRequestToOffer.MatchRequestToOfferController">
+   <top>
+      <HBox alignment="CENTER" prefHeight="42.0" prefWidth="598.0" spacing="20.0">
+         <children>
+            <Label text="How many trip offers would you like to see?" />
+            <TextField fx:id="filterTextField" prefHeight="25.0" prefWidth="51.0" />
+            <Button fx:id="filterButton" mnemonicParsing="false" onAction="#searchMatchingTripOffersAction" text="Filter" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="350.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <content>
+            <ListView fx:id="tripOffersListView" prefHeight="350.0" prefWidth="598.0" />
+        </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

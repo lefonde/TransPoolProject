@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewTripOffer.NewTripOfferController">
+   <children>
+      <TextField id="ApplicantsName" fx:id="nameTextField" layoutX="200.0" layoutY="22.0" />
+      <TextField fx:id="routeTextField" layoutX="200.0" layoutY="72.0" prefHeight="25.0" prefWidth="374.0" />
+      <TextField fx:id="ppkTextField" layoutX="200.0" layoutY="309.0" />
+      <Label layoutX="69.0" layoutY="26.0" text="Name" />
+      <Label layoutX="69.0" layoutY="76.0" text="Route" />
+      <Label layoutX="75.0" layoutY="309.0" text="PPK" />
+      <Label layoutX="72.0" layoutY="172.0" text="Hour" />
+      <Button fx:id="SaveButton" layoutX="470.0" layoutY="353.0" mnemonicParsing="false" onAction="#SaveNewTripOfferAction" text="Save" />
+      <Button fx:id="CancelButton" layoutX="529.0" layoutY="353.0" mnemonicParsing="false" onAction="#CancelNewTripOfferAction" text="Cancel" />
+      <TextField fx:id="hourTextField" layoutX="200.0" layoutY="168.0" />
+      <Label layoutX="75.0" layoutY="123.0" text="Day" />
+      <TextField fx:id="dayTextField" layoutX="200.0" layoutY="119.0" />
+      <Label layoutX="66.0" layoutY="219.0" text="Minute" />
+      <TextField fx:id="minuteTextField" layoutX="200.0" layoutY="215.0" />
+      <Label layoutX="59.0" layoutY="263.0" text="Recurring" />
+      <RadioButton fx:id="noneRadioButton" layoutX="187.0" layoutY="263.0" mnemonicParsing="false" text="none">
+         <toggleGroup>
+            <ToggleGroup fx:id="recurrenceToggleGroup" />
+         </toggleGroup></RadioButton>
+      <RadioButton fx:id="dailyRadioButton" layoutX="244.0" layoutY="263.0" mnemonicParsing="false" text="daily" toggleGroup="$recurrenceToggleGroup" />
+      <RadioButton fx:id="biDailyRadioButton" layoutX="301.0" layoutY="263.0" mnemonicParsing="false" text="bi-daily" toggleGroup="$recurrenceToggleGroup" />
+      <RadioButton fx:id="weeklyRadioButton" layoutX="375.0" layoutY="263.0" mnemonicParsing="false" text="weekly" toggleGroup="$recurrenceToggleGroup" />
+      <RadioButton fx:id="monthlyRadioButton" layoutX="441.0" layoutY="263.0" mnemonicParsing="false" text="monthly" toggleGroup="$recurrenceToggleGroup" />
+      <TextField fx:id="availableSeatsTextField" layoutX="199.0" layoutY="353.0" />
+      <Label layoutX="46.0" layoutY="357.0" text="Available seats" />
+   </children>
+</AnchorPane>

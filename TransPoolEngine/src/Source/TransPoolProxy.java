@@ -1,3 +1,5 @@
+package Source;
+
 import Generated.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -92,17 +94,20 @@ public class TransPoolProxy {
     }
 
     private boolean validateExistingPaths(TransPool data) {
-       List<TransPoolTrip> transPoolTripList= data.getPlannedTrips().getTransPoolTrip();
+       List<TransPoolTrip> transPoolTripList = data.getPlannedTrips().getTransPoolTrip();
+
         String[] stopsNames;
+
         for (TransPoolTrip trip: transPoolTripList) {
             {
                 stopsNames = trip.getRoute().getPath().replaceAll(" ", "").split(",");
                 for (int i = 0; i < stopsNames.length - 1; i++) {
-                    if( GetPath(stopsNames[i], stopsNames[i + 1])==null)
+                    if( getPath(stopsNames[i], stopsNames[i + 1]) == null)
                         return false;
                 }
             }
        }
+
         return true;
     }
 
@@ -121,7 +126,7 @@ public class TransPoolProxy {
     }
 
     private boolean validateDuplicateStops(TransPool data) {
-        List<Stop> stopList=data.getMapDescriptor().getStops().getStop();
+        List<Stop> stopList = data.getMapDescriptor().getStops().getStop();
 
         return(areAllUnique(stopList));
     }
@@ -137,8 +142,7 @@ public class TransPoolProxy {
         return true;
     }
 
-    public void initPlannedTrips()
-    {
+    public void initPlannedTrips() {
         List<TransPoolTrip> transPoolTripList=data.getPlannedTrips().getTransPoolTrip();
         for (TransPoolTrip t: transPoolTripList)
         {
@@ -152,18 +156,21 @@ public class TransPoolProxy {
         return this.transPoolTrips;
     }
 
-    public List<Path> GetAllPaths() {
+    public List<Path> getAllPaths() {
         return data.getMapDescriptor().getPaths().getPath();
     }
 
-    public Path GetPath(String fromStopName, String toStopName) {
+    public Path getPath(String fromStopName, String toStopName) {
         Path result = null;
-        List<Path> paths = GetAllPaths();
+        List<Path> paths = getAllPaths();
 
         try {
             List<Path> fiteredList= paths.stream()
-                    .filter(x -> x.getFrom().equalsIgnoreCase(fromStopName)
-                            && x.getTo().equalsIgnoreCase(toStopName))
+                    .filter(x -> {
+                        if(x.getFrom().equalsIgnoreCase(fromStopName) && x.getTo().equalsIgnoreCase(toStopName)) return true;
+                        if(!x.isOneWay() && x.getFrom().equalsIgnoreCase(toStopName) && x.getTo().equalsIgnoreCase(fromStopName)) return true;
+                        return false;
+                    })
                     .collect(Collectors.toList());
             result = fiteredList.isEmpty() ? null : fiteredList.get(0);
         }
@@ -174,18 +181,18 @@ public class TransPoolProxy {
         return result;
     }
 
-    public List<ProxyTransPoolTrip> GetAllPlannedTrips() {
+    public List<ProxyTransPoolTrip> getAllPlannedTrips() {
         return transPoolTrips;
     }
 
-    public List<Stop> GetAllStops() {
+    public List<Stop> getAllStops() {
         return data.getMapDescriptor().getStops().getStop();
     }
 
-    public Stop GetStop(String stopName) {
+    public Stop getStop(String stopName) {
         Stop result = null;
 
-        List<Stop> stops = GetAllStops();
+        List<Stop> stops = getAllStops();
 
         try {
             result = stops.stream()
@@ -200,4 +207,11 @@ public class TransPoolProxy {
         return result;
     }
 
+    public int getMapWidth() {
+        return data.getMapDescriptor().getMapBoundries().getWidth();
+    }
+
+    public int getMapLength() {
+        return  data.getMapDescriptor().getMapBoundries().getLength();
+    }
 }

@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import Source.TripRequest;
+
 import java.util.List;
 
 public class PrintAllTripRequest  extends Executable {
@@ -29,13 +30,14 @@ public class PrintAllTripRequest  extends Executable {
 
         int requestNumber = 1;
         for (TripRequest tripRequest : tripRequests) {
-            tableSB.append(String.format("%-6d %-12d %-23s %-23s %-23s Hour: %2d Day: %2d\n"
+            tableSB.append(String.format("%-6d %-12d %-23s %-23s %-23s Hour: %2d Minute: %2d Day: %2d\n"
                     , requestNumber++
                     , tripRequest.getSerialNumber()
                     , tripRequest.getNameOfApplicant()
                     , tripRequest.getFromStation()
                     , tripRequest.getToStation()
                     ,tripRequest.getRequestedTimeOfDeparture().getHourStart()
+                    ,tripRequest.getRequestedTimeOfDeparture().getMinuteStart()
                     ,tripRequest.getRequestedTimeOfDeparture().getDayStart()));
         }
 

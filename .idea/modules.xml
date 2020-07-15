@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/TransPoolConsole/TransPoolConsole.iml" filepath="$PROJECT_DIR$/TransPoolConsole/TransPoolConsole.iml" />
       <module fileurl="file://$PROJECT_DIR$/TransPoolEngine/TransPoolEngine.iml" filepath="$PROJECT_DIR$/TransPoolEngine/TransPoolEngine.iml" />
       <module fileurl="file://$PROJECT_DIR$/TransPoolProject.iml" filepath="$PROJECT_DIR$/TransPoolProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TransPoolWindows/TransPoolWindows.iml" filepath="$PROJECT_DIR$/TransPoolWindows/TransPoolWindows.iml" />
     </modules>
   </component>
 </project>

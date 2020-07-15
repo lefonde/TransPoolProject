@@ -12,14 +12,14 @@ public class NewTripRequest extends Executable {
             "departure time (type 0)\n" +
             "arrival time (type 1) \n"+
             "Please enter request details separated by commas and hit enter to finish:\n" +
-            "[your choice time set (0 or 1), departure/arrival hour, day]";
+            "[your choice time set (0 or 1), departure/arrival hour, minute, day]";
 
     private NewTripRequest() { }
 
     @Override
     public void Execute() {
         StringBuilder optionalStopsSB = new StringBuilder();
-        engine.GetStops().stream().forEach(stop -> optionalStopsSB.append(stop.getName() + ", "));
+        engine.getStops().stream().forEach(stop -> optionalStopsSB.append(stop.getName() + ", "));
         optionalStopsSB.setLength(optionalStopsSB.length() - 2);
 
         System.out.println(DETAILS_REQUEST_PROMPT);
@@ -32,12 +32,14 @@ public class NewTripRequest extends Executable {
         String[] timeInputs = usersTimeInput.replaceAll(" ","").split(",");
 
         try {
-            engine.CreateNewTripRequest(inputs[0], inputs[1], inputs[2],Boolean.parseBoolean(timeInputs[0]),Integer.parseInt(timeInputs[1]), Integer.parseInt(timeInputs[2]));
+            //inputs[0] =  name, inputs[1] = fromStopName, inputs[2] = toStopName, timeInputs[0] = timeChoice, timeInputs[1] =  hour, timeInputs[2] = minute, Integer.parseInt(timeInputs[3]) = day
+            engine.CreateNewTripRequest(inputs[0], inputs[1], inputs[2], Boolean.parseBoolean(timeInputs[0]), Integer.parseInt(timeInputs[1]), Integer.parseInt(timeInputs[2]), Integer.parseInt(timeInputs[3]));
         } catch (TimeException e) {
             System.out.println(e.getMessage());
         } catch (NoSuchStopException e) {
             System.out.println(e.getMessage());
         }
+
         System.out.println("Trip added successfully!");
     }
 

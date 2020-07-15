@@ -1,0 +1,26 @@
+.path {
+    -fx-stroke: #33135C;
+    -fx-stroke-width: 3px;
+}
+
+.trip {
+    -fx-stroke: #652EC7;
+    -fx-stroke-width: 5px;
+}
+
+.selectedTrip {
+    -fx-stroke: #DE38C8;
+    -fx-stroke-width: 7px;
+}
+
+.edge-text {
+    -fx-fill: #DE38C8;
+    -fx-font-weight: BOLD;
+    -fx-underline: true;
+}
+
+.arrow-head {
+    -fx-stroke: #FFD300;
+    -fx-fill: "BLACK";
+    -fx-stroke-width: 1px;
+}

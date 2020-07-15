@@ -1,3 +1,6 @@
+package Source;
+
+import Generated.Stop;
 import Generated.TransPoolTrip;
 
 import java.util.ArrayList;
@@ -20,12 +23,23 @@ public class ProxyTransPoolTrip {
     public ProxyTransPoolTrip(TransPoolTrip theTransPoolTrip)
     {
 
-        this.capacity=theTransPoolTrip.getCapacity();
-        this.owner= theTransPoolTrip.getOwner();
-        this.ppk=theTransPoolTrip.getPPK();
-        this.route= theTransPoolTrip.getRoute().getPath();
-        this.scheduling= new ProxyScheduling(theTransPoolTrip.getScheduling());
-        this.serialNumber= ++counter;
+        this.capacity = theTransPoolTrip.getCapacity();
+        this.owner = theTransPoolTrip.getOwner();
+        this.ppk = theTransPoolTrip.getPPK();
+        this.route = theTransPoolTrip.getRoute().getPath();
+        this.scheduling = new ProxyScheduling(theTransPoolTrip.getScheduling());
+        this.serialNumber = ++counter;
+        this.hitchhikers = new ArrayList<>();
+        isCarFull = false;
+    }
+
+    public ProxyTransPoolTrip(String name, ProxyScheduling schedule, int ppk, int seatsAvailable, String route) {
+        this.capacity = seatsAvailable;
+        this.owner = name;
+        this.ppk = ppk;
+        this.route = route;
+        this.scheduling = schedule;
+        this.serialNumber = ++counter;
         this.hitchhikers = new ArrayList<>();
         isCarFull = false;
     }
@@ -54,12 +68,13 @@ public class ProxyTransPoolTrip {
 
     public int getPPK() { return ppk; }
 
-    public String getRoute() {
+    public String getRouteAsString() {
         return route;
     }
 
-    public ProxyScheduling getScheduling() { return scheduling;}
 
+
+    public ProxyScheduling getScheduling() { return scheduling;}
 }
 
 

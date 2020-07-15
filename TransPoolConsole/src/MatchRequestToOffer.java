@@ -1,3 +1,6 @@
+import Source.ProxyTransPoolTrip;
+import Source.TripRequest;
+
 import java.util.List;
 
 public class MatchRequestToOffer extends Executable {

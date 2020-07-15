@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="TransPoolConsole" />
+    <orderEntry type="module" module-name="TransPoolWindows" />
+    <orderEntry type="library" name="fxgraph-0.0.3" level="project" />
   </component>
 </module>

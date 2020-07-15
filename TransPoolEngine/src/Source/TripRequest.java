@@ -1,4 +1,4 @@
-import Generated.Scheduling;
+package Source;
 
 public class TripRequest {
 
@@ -7,7 +7,7 @@ public class TripRequest {
     private String nameOfApplicant;
     private String fromStation;
     private String toStation;
-    private Scheduling RequestedTimeOfDeparture;
+    private ProxyScheduling RequestedTimeOfDeparture;
 
     private boolean isTripSegmented;
     private boolean timeDefChoice;//departure=0, arrival=1
@@ -15,7 +15,7 @@ public class TripRequest {
     private boolean isOpenRequest;
     //private LocalDateTime RequestedTimeOfDeparture;
 
-    TripRequest(String nameOfApplicant, String fromStation, String toStation,Scheduling requestedTime, boolean timeDefChoice, boolean isTripSegmented) {
+    TripRequest(String nameOfApplicant, String fromStation, String toStation, ProxyScheduling requestedTime, boolean timeDefChoice, boolean isTripSegmented) {
 
         this.nameOfApplicant = nameOfApplicant;
         this.fromStation = fromStation;
@@ -55,11 +55,11 @@ public class TripRequest {
         this.toStation = toStation;
     }
 
-    public Scheduling getRequestedTimeOfDeparture() {
+    public ProxyScheduling getRequestedTimeOfDeparture() {
         return RequestedTimeOfDeparture;
     }
 
-    public void setRequestedTimeOfDeparture(Scheduling requestedTimeOfDeparture) {
+    public void setRequestedTimeOfDeparture(ProxyScheduling requestedTimeOfDeparture) {
         RequestedTimeOfDeparture = requestedTimeOfDeparture;
     }
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<ScrollPane id="scrollpaneContainer" prefHeight="500.0" prefWidth="800.0" style="-fx-border-color: red;" xmlns:fx="http://javafx.com/fxml/1" fx:controller="middle.graph.map.MapController"/>
+

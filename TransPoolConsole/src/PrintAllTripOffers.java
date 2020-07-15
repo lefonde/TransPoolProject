@@ -1,5 +1,7 @@
+import Source.ProxyTransPoolTrip;
+import Source.TripRequest;
+
 import java.util.List;
-import java.util.Map;
 
 public class PrintAllTripOffers extends Executable {
     private static final PrintAllTripOffers instance = new PrintAllTripOffers();
@@ -25,7 +27,7 @@ public class PrintAllTripOffers extends Executable {
 
         int offerNumber = 1;
         for (ProxyTransPoolTrip tripOffer : tripsList) {
-            String [] stopsNames = tripOffer.getRoute().replaceAll(" ", "").split(",");
+            String [] stopsNames = tripOffer.getRouteAsString().replaceAll(" ", "").split(",");
             List<TripRequest> hitchhikers = tripOffer.getHitchhikers();
 
             tableSB.append(String.format("%-6d %-12d %-16s %-21s %-10d %-10s %-11f %-14d"
